@@ -51,6 +51,18 @@ trait MountOps[N] {
     }
   }
 
+  /** Check that a given node matches the provided description. Call doFail with an error message if the test fails. */
+  def expectNode(
+    actualNode: dom.Node,
+    expectedNode: ExpectedNode[N],
+    clue: String = mountedElementClue
+  ): Unit = {
+    val errors = expectedNode.checkNode(actualNode, clue)
+    if (errors.nonEmpty) {
+      doFail(s"Given node does not match expectations:\n${errors.mkString("\n")}")
+    }
+  }
+
   /** Inject the root node into the DOM */
   def mount(node: dom.Node, clue: String): Unit = {
     assertEmptyContainer("mount")
