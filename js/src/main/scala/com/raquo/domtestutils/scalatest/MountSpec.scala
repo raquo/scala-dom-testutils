@@ -20,11 +20,11 @@ trait MountSpec[N]
     * ScalaTest obscures error messages reported from the latter.
     */
   override def withFixture(test: NoArgTest): Outcome = {
-    resetDOM()
+    resetDOM() // Runs in the beginning of each test
     try {
       super.withFixture(test)
     } finally {
-      clearDOM()
+      clearDOM() // Runs at the end of each test, regardless of the result
     }
   }
 }
