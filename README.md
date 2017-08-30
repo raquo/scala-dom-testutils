@@ -44,7 +44,7 @@ expectNode(
 
 The above example defines `val jsDomNode` using [Scala DOM Builder](https://github.com/raquo/scala-dom-builder) which is a separate project, completely optional. It is a minimal, unopinionated library for building and manipulating Javascript DOM trees. You are free to create the DOM nodes that you want to test in any other way.
 
-See more usage examples in [Scala DOM Builder tests](https://github.com/raquo/scala-dom-builder/tree/master/js/src/test/scala/com/raquo/dombuilder/dombuilder) and [Laminar tests](https://github.com/raquo/laminar/tree/master/src/test/scala/com/raquo/laminar)
+See more usage examples in [Scala DOM Builder tests](https://github.com/raquo/scala-dom-builder/tree/master/js/src/test/scala/com/raquo/dombuilder) and [Laminar tests](https://github.com/raquo/laminar/tree/master/src/test/scala/com/raquo/laminar)
 
 ### Usage
 
