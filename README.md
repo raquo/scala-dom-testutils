@@ -46,7 +46,7 @@ The above example defines `val jsDomNode` using [Scala DOM Builder](https://gith
 
 See more usage examples in [Scala DOM Builder tests](https://github.com/raquo/scala-dom-builder/tree/master/js/src/test/scala/com/raquo/dombuilder) and [Laminar tests](https://github.com/raquo/laminar/tree/master/src/test/scala/com/raquo/laminar)
 
-### Usage
+## Usage
 
 Canonical usage is to `mount` one DOM node / tree (e.g. the output of your component) and then test it using the `expectNode` method.
 
@@ -65,9 +65,11 @@ Pull requests for such adapters for popular test frameworks are welcome.
 
 **To power your library's test utils**: If you are building or using a DOM construction / manipulation library like e.g. React, you might want to override the `mount` / `unmount` methods to give your library the chance to do proper setup and cleanup. Instead of calling super methods for these, you can make use of `assertEmptyContainer` / `assertRootNodeMounted` / `mountedElementClue` the same way they are used in the default implementations in `MountOps`.
 
+For an example of the above, see [LaminarSpec](https://github.com/raquo/laminar/blob/master/src/test/scala/com/raquo/laminar/utils/LaminarSpec.scala), which defines custom mounting / unmounting logic for [Laminar](https://github.com/raquo/laminar)'s reactive nodes.
+
 If all this is more hassle than it's worth for your use case, just forgo `MountOps` and drop down to calling `ExpectedNode.checkNode(actualNode)` to get a list of errors, and build your own test util around it.  
 
-### TODO
+## TODO
 
 * Docs: Document [N] type param (note: feel free to put `Any` in there for now)
 * Docs: Add examples without Scala DOM Builder, in this library's own test suite
@@ -76,6 +78,15 @@ If all this is more hassle than it's worth for your use case, just forgo `MountO
 * Docs: Explain how to create your own custom rules
 * Docs: Document available assertions
 * Feature: Add `anyChildren` and/or `maybeMoreChildren` to allow shallow / focused matching
+
+## My Related Projects
+
+- [Scala DOM Types](https://github.com/raquo/scala-dom-types) – Type definitions that we use for all the HTML tags, attributes, properties, and styles
+- [Scala DOM Builder](https://github.com/raquo/scala-dom-builder) – Low-level library for building and manipulating DOM trees
+- [Laminar](https://github.com/raquo/laminar) – Reactive UI library based on _Scala DOM Builder_
+- [Snabbdom.scala](https://github.com/raquo/Snabbdom.scala) – Scala.js interface to a popular JS virtual DOM library
+- [XStream.scala](https://github.com/raquo/XStream.scala) – Scala.js interface to a simple JS reactive streams library
+- [Cycle.scala](https://github.com/raquo/Cycle.scala) – Scala.js interface to a popular JS functional reactive library
 
 ## Author
 
