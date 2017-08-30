@@ -2,6 +2,8 @@
 
 _Scala DOM Test Utils_ provides a convenient, type-safe way to assert that a real Javascript DOM node matches a certain description using an extensible DSL.
 
+    "com.raquo" %%% "domtestutils" % "0.1"
+
 The types of DOM tags, attributes, properties and styles are provided by [Scala DOM Types](https://github.com/raquo/scala-dom-types), but you don't need to be using that library in your application code, _Scala DOM TestUtils_ can test any DOM node no matter how it was created. 
 
 You can use _Scala DOM Test Utils_ either directly to make assertions, or you if you're writing a DOM construction / manipulation library, to power its own test utils package. 
