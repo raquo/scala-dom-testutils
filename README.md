@@ -37,7 +37,7 @@ expectNode(
       ),
       span like " world"
     ),
-    hr likeWhatever // Just check existence of element and tag name. Equivalent to `hr like ()` 
+    hr // Just check existence of element and tag name. Equivalent to `hr like ()` 
   )
 )
 ```
@@ -71,7 +71,6 @@ If all this is more hassle than it's worth for your use case, just forgo `MountO
 
 ## TODO
 
-* Docs: Document [N] type param (note: feel free to put `Any` in there for now)
 * Docs: Add examples without Scala DOM Builder, in this library's own test suite
 * Docs: Explain in more detail how to make assertions
 * Docs: Explain the basics of Scala DOM Types node / attr / etc. types

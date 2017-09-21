@@ -1,50 +1,52 @@
 package com.raquo.domtestutils.matching
 
-import com.raquo.domtypes.generic.builders.Builder
+import com.raquo.domtypes.generic.builders.{Builder, Tag}
 import com.raquo.domtypes.generic.keys.{Attr, Prop, Style}
+import com.raquo.domtypes.generic.nodes.Comment
 
-trait RuleImplicits[N] {
+trait RuleImplicits {
 
-  def comment: ExpectedNode[N]
-
-  def textNode: ExpectedNode[N]
-
-  implicit def asEmptyExpectedNode(builder: Builder[N]): ExpectedNode[N] = {
-    new ExpectedNode(builder)
+  implicit def makeTagTestable(tag: Tag[_]): ExpectedNode = {
+    ExpectedNode.element(tag)
   }
 
-  implicit def withAttrRuleOps[V](attr: Attr[V]): AttrRuleOps[V, N] = {
-    new AttrRuleOps(attr)
+  implicit def makeCommentBuilderTestable(commentBuilder: Builder[Comment]): ExpectedNode = {
+    ExpectedNode.comment()
   }
 
-  implicit def withPropRuleOps[V](prop: Prop[V]): PropRuleOps[V, N] = {
-    new PropRuleOps(prop)
+  implicit def makeAttrTestable[V](attr: Attr[V]): TestableAttr[V] = {
+    new TestableAttr(attr)
   }
 
-  implicit def withStyleRuleOps[V](style: Style[V]): StyleRuleOps[V, N] = {
-    new StyleRuleOps(style)
+  implicit def makePropTestable[V](prop: Prop[V]): TestableProp[V] = {
+    new TestableProp(prop)
   }
 
-  implicit def childElementToRule(child: ExpectedNode[N]): Rule[N] = {
-    new Rule[N] {
-      def applyTo(expectedNode: ExpectedNode[N]): Unit = {
-        child.addCheck(child.checkNodeType)
-        expectedNode.addExpectedChild(child)
-      }
-    }
+  implicit def makeStyleTestable[V](style: Style[V]): TestableStyle[V] = {
+    new TestableStyle(style)
   }
 
-  implicit def childTextToRule(childText: String): Rule[N] = {
-    new Rule[N] {
-      def applyTo(expectedNode: ExpectedNode[N]): Unit = {
-        if (expectedNode.nodeType == "Comment") {
-          expectedNode.addCheck(ExpectedNode.checkCommentText(childText))
-        } else {
-          val expectedTextChild = textNode
-          expectedTextChild.addCheck(ExpectedNode.checkText(childText))
-          expectedNode.addExpectedChild(expectedTextChild)
-        }
-      }
+  implicit def expectedNodeAsExpectedChildRule(expectedChild: ExpectedNode): Rule = (expectedParent: ExpectedNode) => {
+    expectedParent.addExpectedChild(expectedChild)
+  }
+
+  implicit def tagAsExpectedChildRule(tag: Tag[_]): Rule = (expectedParent: ExpectedNode) => {
+    val expectedChild: ExpectedNode = makeTagTestable(tag)
+    expectedParent.addExpectedChild(expectedChild)
+  }
+
+  implicit def commentBuilderAsExpectedChildRule(commentBuilder: Builder[Comment]): Rule = (expectedParent: ExpectedNode) => {
+    val expectedChild: ExpectedNode = makeCommentBuilderTestable(commentBuilder)
+    expectedParent.addExpectedChild(expectedChild)
+  }
+
+  implicit def stringAsExpectedTextRule(childText: String): Rule = (expectedParent: ExpectedNode) => {
+    if (expectedParent.isComment) {
+      expectedParent.addCheck(ExpectedNode.checkCommentText(childText))
+    } else {
+      val expectedTextChild = ExpectedNode.textNode()
+      expectedTextChild.addCheck(ExpectedNode.checkText(childText))
+      expectedParent.addExpectedChild(expectedTextChild)
     }
   }
 }

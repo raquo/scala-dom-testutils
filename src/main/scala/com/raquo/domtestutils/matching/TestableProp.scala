@@ -11,18 +11,14 @@ import scala.scalajs.js
 
 // @TODO Create EventPropOps
 
-class PropRuleOps[V, N](val prop: Prop[V]) extends AnyVal {
+class TestableProp[V](val prop: Prop[V]) extends AnyVal {
 
-  def is(expected: V): Rule[N] = new Rule[N] {
-    def applyTo(testNode: ExpectedNode[N]): Unit = {
-      testNode.addCheck(nodePropIs(prop, Some(expected)))
-    }
+  def is(expected: V): Rule = (testNode: ExpectedNode) => {
+    testNode.addCheck(nodePropIs(prop, Some(expected)))
   }
 
-  def isEmpty: Rule[N] = new Rule[N] {
-    def applyTo(testNode: ExpectedNode[N]): Unit = {
-      testNode.addCheck(nodePropIs(prop, None))
-    }
+  def isEmpty: Rule = (testNode: ExpectedNode) => {
+    testNode.addCheck(nodePropIs(prop, None))
   }
 
   private def nodePropIs(prop: Prop[V], maybeExpectedValue: Option[V])(node: dom.Node): MaybeError = {

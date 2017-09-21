@@ -1,88 +1,69 @@
 package com.raquo.domtestutils.matching
 
 import com.raquo.domtestutils.Utils.repr
-import com.raquo.domtypes.generic.builders.Builder
-import com.raquo.domtypes.generic.nodes.{Comment, Element, Text}
-
-// @TODO[SERVER]
+import com.raquo.domtypes.generic.builders.Tag
 import org.scalajs.dom
 
 import scala.collection.mutable
 
-// @TODO[API] Implement ExpectedNode as a custom Node[N] once it is generic enough
-// @TODO[API] emptyNode is a clutch, what we really care about is its type (it's the `div` in `div like (...)` part)
-
-class ExpectedNode[N](builder: Builder[N]) {
+class ExpectedNode protected (
+  val maybeTagName: Option[String] = None,
+  val isTextNode: Boolean = false,
+  val isComment: Boolean = false
+) {
 
   import ExpectedNode._
 
   // @TODO[Integrity] Write tests for this test util; it's quite complicated.
-  // @TODO[Integrity] assert that no attrs / props / eventprops / etc. are defined because those won't be tested ...what the hell does this mean, I forgot :(
 
-  private val emptyNode: N = builder.build()
+  private val checksBuffer: mutable.Buffer[Check] = mutable.Buffer(
+    checkNodeType
+  )
 
-  private val checksBuffer: mutable.Buffer[Check] = mutable.Buffer()
+  private val expectedChildrenBuffer: mutable.Buffer[ExpectedNode] = mutable.Buffer()
 
-  private val expectedChildrenBuffer: mutable.Buffer[ExpectedNode[N]] = mutable.Buffer()
-
-  // @TODO[API] There's gotta be a better way to expose just the type N, not val emptyNode. ClassTag? Sealed trait?
-  val nodeType: String = emptyNode match {
-    case el: Element => "Element"
-    case t: Text => "Text"
-    case c: Comment => "Comment"
+  val nodeType: String = (maybeTagName, isTextNode, isComment) match {
+    case (Some(tagName), false, false) => s"Element[$tagName]"
+    case (None, true, false) => "Text"
+    case (None, false, true) => "Comment"
+    case _ => "[ExpectedNode.nodeType: InvalidNode]"
   }
 
   def checks: List[Check] = checksBuffer.toList
 
-  def expectedChildren: List[ExpectedNode[N]] = expectedChildrenBuffer.toList
+  def expectedChildren: List[ExpectedNode] = expectedChildrenBuffer.toList
 
   def addCheck(check: Check): Unit = {
     checksBuffer.append(check)
   }
 
-  def addExpectedChild(child: ExpectedNode[N]): Unit = {
+  def addExpectedChild(child: ExpectedNode): Unit = {
     expectedChildrenBuffer.append(child)
   }
 
-  def like(rules: Rule[N]*): ExpectedNode[N] = {
-    rules.foreach(_.applyTo(this))
+  def like(rules: Rule*): ExpectedNode = {
+    rules.foreach(rule => rule(this))
     this
   }
 
-  def likeWhatever: ExpectedNode[N] = {
-    new ExpectedNode[N](builder)
-  }
-
   def checkNodeType(actualNode: dom.Node): MaybeError = {
-    (actualNode, emptyNode) match {
-      case (actualElement: dom.Element, emptyElement: Element) =>
-        val actualTagName = actualElement.tagName.toLowerCase
-        val expectedTagName = emptyElement.tagName
-        if (actualTagName != expectedTagName) {
-          Some(s"Element tag name is incorrect: actual ${repr(actualTagName)}, expected ${repr(expectedTagName)}")
-        } else {
-          None
-        }
-      case _ =>
-        val actualNodeType = actualNode match {
-          case el: dom.Element => "Element"
-          case t: dom.Text => "Text"
-          case c: dom.Comment => "Comment"
-        }
-        if (actualNodeType == nodeType) {
-          None
-        } else {
-          Some(
-            s"Node type mismatch: actual node is a ${repr(actualNodeType)}, expected an instance of ${repr(nodeType)}"
-          )
-        }
+    val actualNodeType = actualNode match {
+      case el: dom.Element => s"Element[${el.tagName.toLowerCase}]"
+      case t: dom.Text => "Text"
+      case c: dom.Comment => "Comment"
+    }
+    if (actualNodeType == nodeType) {
+      None
+    } else {
+      Some(s"Node type mismatch: actual node is a ${repr(actualNodeType)}, expected a ${repr(nodeType)}")
     }
   }
 
   def checkNode(node: dom.Node, clue: String): ErrorList = {
-    val checksErrors: List[String] = checks
+    val errorsFromThisNode: ErrorList = checks
       .flatMap(check => check(node))
-      .map(withClue(clue, _))
+      .map(error => withClue(clue, error))
+
     val actualNumChildren = node.childNodes.length
     val expectedNumChildren = expectedChildren.length
 
@@ -101,22 +82,33 @@ class ExpectedNode[N](builder: Builder[N]) {
       }
     }
 
-    checksErrors ++ childErrors
+    errorsFromThisNode ++ childErrors
   }
 
+  // @TODO[Convenience] The checks that we apply could also report what they're doing here
   override def toString: String = {
-    emptyNode match {
-      case element: Element =>
-        s"ExpectedNode[Element,tag=${repr(element.tagName)}]"
-      case text: Text =>
-        s"ExpectedNode[Text,text=${repr(text.text)}]"
-      case comment: Comment =>
-        s"ExpectedNode[Comment,text=${repr(comment.text)}]"
+    (maybeTagName, isTextNode, isComment) match {
+      case (Some(tagName), false, false) =>
+        s"ExpectedNode[Element,tag=${repr(tagName)}]"
+      case (None, true, false) =>
+        s"ExpectedNode[Text]"
+      case (None, false, true) =>
+        s"ExpectedNode[Comment]"
+      case _ =>
+        throw new Exception("ExpectedNode.toString: inconsistent state")
     }
   }
 }
 
 object ExpectedNode {
+
+  def element(tag: Tag[_]): ExpectedNode = new ExpectedNode(maybeTagName = Some(tag.tagName))
+
+  def element(tagName: String): ExpectedNode = new ExpectedNode(maybeTagName = Some(tagName))
+
+  def comment(): ExpectedNode = new ExpectedNode(isComment = true)
+
+  def textNode(): ExpectedNode = new ExpectedNode(isTextNode = true)
 
   def withClue(clue: String, message: String): String = {
     s"[$clue]: $message"

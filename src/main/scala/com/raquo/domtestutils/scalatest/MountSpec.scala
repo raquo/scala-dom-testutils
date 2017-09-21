@@ -3,9 +3,9 @@ package com.raquo.domtestutils.scalatest
 import com.raquo.domtestutils.MountOps
 import org.scalatest.{Outcome, TestSuite}
 
-trait MountSpec[N]
+trait MountSpec
   extends TestSuite
-  with MountOps[N]
+  with MountOps
 {
 
   override def doAssert(condition: Boolean, message: String): Unit = {

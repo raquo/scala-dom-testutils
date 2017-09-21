@@ -7,7 +7,7 @@ import org.scalajs.dom
   * This functionality can be used with DOM nodes created by any means, you don't need to use Scala DOM Builder.
   * This trait is agnostic of the testing frameworks. We have an adapter for ScalaTest, see MountSpec.
   */
-trait MountOps[N] {
+trait MountOps {
 
   // === On nullable variables ===
   // `container` and `rootNode` are nullable because if they were an Option it would be too easy to
@@ -39,7 +39,7 @@ trait MountOps[N] {
   def doFail(message: String): Nothing
 
   /** Check that the root node matches the provided description. Call doFail with an error message if the test fails. */
-  def expectNode(expectedNode: ExpectedNode[N]): Unit = {
+  def expectNode(expectedNode: ExpectedNode): Unit = {
     rootNode match {
       case null =>
         doFail(s"ASSERT FAIL [expectNode]: Root node not found. Did you forget to mount()?")
@@ -54,7 +54,7 @@ trait MountOps[N] {
   /** Check that a given node matches the provided description. Call doFail with an error message if the test fails. */
   def expectNode(
     actualNode: dom.Node,
-    expectedNode: ExpectedNode[N],
+    expectedNode: ExpectedNode,
     clue: String = mountedElementClue
   ): Unit = {
     val errors = expectedNode.checkNode(actualNode, clue)
@@ -113,7 +113,7 @@ trait MountOps[N] {
   def assertEmptyContainer(clue: String): Unit = {
     containerNode match {
       case null =>
-        doFail(s"ASSERT FAIL [$clue]: Container not found. Usually, resetDocument() creates the container in withFixture().")
+        doFail(s"ASSERT FAIL [$clue]: Container not found. Usually, resetDOM() creates the container in withFixture().")
       case _ =>
         doAssert(
           containerNode.parentNode == dom.document.body,

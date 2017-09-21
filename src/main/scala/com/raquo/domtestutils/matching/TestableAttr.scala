@@ -3,21 +3,16 @@ package com.raquo.domtestutils.matching
 import com.raquo.domtypes.generic.keys.Attr
 import com.raquo.domtestutils.Utils.repr
 
-// @TODO[SERVER]
 import org.scalajs.dom
 
-class AttrRuleOps[V, N](val attr: Attr[V]) extends AnyVal {
+class TestableAttr[V](val attr: Attr[V]) extends AnyVal {
 
-  def is(expected: V): Rule[N] = new Rule[N] {
-    def applyTo(testNode: ExpectedNode[N]): Unit = {
-      testNode.addCheck(nodeAttrIs(attr, Some(expected)))
-    }
+  def is(expected: V): Rule = (testNode: ExpectedNode) => {
+    testNode.addCheck(nodeAttrIs(attr, Some(expected)))
   }
 
-  def isEmpty: Rule[N] = new Rule[N] {
-    def applyTo(testNode: ExpectedNode[N]): Unit = {
-      testNode.addCheck(nodeAttrIs(attr, None))
-    }
+  def isEmpty: Rule = (testNode: ExpectedNode) => {
+    testNode.addCheck(nodeAttrIs(attr, None))
   }
 
   private def nodeAttrIs(attr: Attr[V], maybeExpectedValue: Option[V])(node: dom.Node): MaybeError = {
