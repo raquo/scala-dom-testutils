@@ -1,6 +1,6 @@
 package com.raquo.domtestutils.matching
 
-import com.raquo.domtypes.generic.builders.{Builder, Tag}
+import com.raquo.domtypes.generic.builders.Tag
 import com.raquo.domtypes.generic.keys.{Attr, Prop, Style}
 import com.raquo.domtypes.generic.nodes.Comment
 
@@ -10,7 +10,7 @@ trait RuleImplicits {
     ExpectedNode.element(tag)
   }
 
-  implicit def makeCommentBuilderTestable(commentBuilder: Builder[Comment]): ExpectedNode = {
+  implicit def makeCommentBuilderTestable(commentBuilder: () => Comment): ExpectedNode = {
     ExpectedNode.comment()
   }
 
@@ -35,7 +35,7 @@ trait RuleImplicits {
     expectedParent.addExpectedChild(expectedChild)
   }
 
-  implicit def commentBuilderAsExpectedChildRule(commentBuilder: Builder[Comment]): Rule = (expectedParent: ExpectedNode) => {
+  implicit def commentBuilderAsExpectedChildRule(commentBuilder: () => Comment): Rule = (expectedParent: ExpectedNode) => {
     val expectedChild: ExpectedNode = makeCommentBuilderTestable(commentBuilder)
     expectedParent.addExpectedChild(expectedChild)
   }
