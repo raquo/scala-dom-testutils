@@ -10,7 +10,7 @@ crossScalaVersions := Seq("2.11.11", "2.12.3")
 
 homepage := Some(url("https://github.com/raquo/scala-dom-testutils"))
 
-licenses += ("MIT", url("https://github.com/raquo/scala-dom-testutils/blob/master/LICENSE.txt"))
+licenses += ("MIT", url("https://github.com/raquo/scala-dom-testutils/blob/master/LICENSE.md"))
 
 scmInfo := Some(
   ScmInfo(
