@@ -2,53 +2,50 @@ package com.raquo.domtestutils.matching
 
 import com.raquo.domtypes.generic.keys.Attr
 import com.raquo.domtestutils.Utils.repr
-
 import org.scalajs.dom
 
 class TestableAttr[V](val attr: Attr[V]) extends AnyVal {
 
-  def is(expected: V): Rule = (testNode: ExpectedNode) => {
-    testNode.addCheck(nodeAttrIs(attr, Some(expected)))
+  def is(expectedValue: V): Rule = (testNode: ExpectedNode) => {
+    testNode.addCheck(nodeAttrIs(Some(expectedValue)))
   }
 
   def isEmpty: Rule = (testNode: ExpectedNode) => {
-    testNode.addCheck(nodeAttrIs(attr, None))
+    testNode.addCheck(nodeAttrIs(None))
   }
 
-  private def nodeAttrIs(attr: Attr[V], maybeExpectedValue: Option[V])(node: dom.Node): MaybeError = {
-    (node, maybeExpectedValue) match {
-      case (element: dom.Element, None) =>
-        if (element.hasAttribute(attr.name)) {
-          val actual = element.getAttribute(attr.name)
-          Some(s"Attr `${attr.name}` should not be present: actual value ${repr(actual)}, expected to be missing")
-        } else {
-          None
-        }
-      case (element: dom.Element, Some(expectedValue: Boolean)) =>
-        val hasAttribute = element.hasAttribute(attr.name)
-        val attributeValue = element.getAttribute(attr.name)
-        (hasAttribute, expectedValue) match {
-          case (true, false) =>
-            Some(s"Boolean attr `${attr.name}` mismatch: attribute is present, its value is ${repr(attributeValue)}, expected attribute to be missing")
-          case (false, true) =>
-            Some(s"Boolean attr `${attr.name}` mismatch: attribute is missing, expected to be present")
-          case (true, true) if attributeValue != "" =>
-            Some(s"Boolean attr `${attr.name}` value mismatch: attribute present as expected, but actual value ${repr(attributeValue)}, expected no value")
-          case _ => None
-        }
-      case (element: dom.Element, Some(expectedValue)) =>
-        if (!element.hasAttribute(attr.name)) {
-          Some(s"Attr `${attr.name}` is missing, expected ${repr(expectedValue)}")
-        } else {
-          val actualValue = element.getAttribute(attr.name)
-          if (actualValue != expectedValue.toString) {
-            Some(s"Attr `${attr.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}")
-          } else {
-            None
-          }
+  private[domtestutils] def nodeAttrIs(maybeExpectedValue: Option[V])(node: dom.Node): MaybeError = {
+    node match {
+      case (element: dom.Element) =>
+        val maybeActualValue = getAttr(element)
+        (maybeActualValue, maybeExpectedValue) match {
+          case (None, None) => None
+          case (Some(actualValue), Some(expectedValue)) =>
+            if (actualValue == expectedValue) {
+              None
+            } else {
+              Some(s"Attr `${attr.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}")
+            }
+          case (None, Some(expectedValue)) =>
+            if (attr.codec.encode(expectedValue) == null) {
+              None // Note: `encode` returning `null` is exactly how missing attribute values are defined, e.g. in BooleanAsAttrPresenceCodec
+            } else {
+              Some(s"Attr `${attr.name}` is missing, expected ${repr(expectedValue)}")
+            }
+          case (Some(actualValue), None) =>
+            Some(s"Attr `${attr.name}` should not be present: actual value ${repr(actualValue)}, expected to be missing")
         }
       case _ =>
         Some(s"Unable to verify Attr `${attr.name}` because node $node is not a DOM Element (might be a text node?)")
+    }
+  }
+
+  private[domtestutils] def getAttr(element: dom.Element): Option[V] = {
+    // Note: for boolean-as-presence attributes, this returns `None` instead of `Some(false)` when the attribute is missing.
+    if (element.hasAttribute(attr.name)) {
+      Some(attr.codec.decode(element.getAttribute(attr.name)))
+    } else {
+      None
     }
   }
 }

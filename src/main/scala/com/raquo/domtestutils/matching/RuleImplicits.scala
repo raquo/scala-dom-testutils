@@ -18,7 +18,7 @@ trait RuleImplicits {
     new TestableAttr(attr)
   }
 
-  implicit def makePropTestable[V](prop: Prop[V]): TestableProp[V] = {
+  implicit def makePropTestable[V, DomV](prop: Prop[V, DomV]): TestableProp[V, DomV] = {
     new TestableProp(prop)
   }
 

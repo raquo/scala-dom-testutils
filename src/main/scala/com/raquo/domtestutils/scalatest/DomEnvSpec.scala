@@ -1,7 +1,6 @@
 package com.raquo.domtestutils.scalatest
 
 import com.raquo.domtestutils.{EventSimulator, Utils}
-// @TODO[SERVER]
 import org.scalajs.dom
 import org.scalatest.{FunSpec, Matchers}
 
