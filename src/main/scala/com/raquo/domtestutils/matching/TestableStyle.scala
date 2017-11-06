@@ -2,22 +2,18 @@ package com.raquo.domtestutils.matching
 
 import com.raquo.domtestutils.Utils.repr
 import com.raquo.domtypes.generic.keys.Style
-
 import org.scalajs.dom
 
 import scala.scalajs.js
 
 class TestableStyle[V](val style: Style[V]) extends AnyVal {
 
-  def is(expected: V): Rule = (testNode: ExpectedNode) => {
-    testNode.addCheck(nodeStyleIs(style, expected))
+  def is(expectedValue: V): Rule = (testNode: ExpectedNode) => {
+    testNode.addCheck(nodeStyleIs(expectedValue))
   }
 
-  private def nodeStyleIs(style: Style[V], expectedValue: V)(node: dom.Node): MaybeError = {
-    val maybeActualValue = node.asInstanceOf[js.Dynamic]
-      .selectDynamic("style")
-      .selectDynamic(style.name)
-      .asInstanceOf[js.UndefOr[V]].toOption
+  private[domtestutils] def nodeStyleIs(expectedValue: V)(node: dom.Node): MaybeError = {
+    val maybeActualValue = getStyle(node)
     maybeActualValue match {
       case Some(actualValue) =>
         if (actualValue == expectedValue) {
@@ -30,10 +26,11 @@ class TestableStyle[V](val style: Style[V]) extends AnyVal {
     }
   }
 
-  private def getStyle(element: dom.Element, style: Style[V]): Option[String] = {
-    element.asInstanceOf[js.Dynamic]
+  private[domtestutils] def getStyle(node: dom.Node): Option[V] = {
+    // @TODO[Integrity] Pattern match to dom.html.Element instead, and get style from there
+    node.asInstanceOf[js.Dynamic]
       .selectDynamic("style")
       .selectDynamic(style.name)
-      .asInstanceOf[js.UndefOr[String]].toOption
+      .asInstanceOf[js.UndefOr[V]].toOption
   }
 }

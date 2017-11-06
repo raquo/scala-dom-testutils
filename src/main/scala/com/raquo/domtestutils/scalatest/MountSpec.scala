@@ -5,8 +5,7 @@ import org.scalatest.{Outcome, TestSuite}
 
 trait MountSpec
   extends TestSuite
-  with MountOps
-{
+  with MountOps {
 
   override def doAssert(condition: Boolean, message: String): Unit = {
     assert(condition, message)

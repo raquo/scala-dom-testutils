@@ -4,6 +4,7 @@ import scala.util.Random
 
 trait Utils {
 
+  // @TODO[API] this doesn't really belong here
   def randomString(prefix: String = "", length: Int = 5): String = {
     prefix + Random.nextString(length)
   }
