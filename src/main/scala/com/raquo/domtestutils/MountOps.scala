@@ -16,10 +16,10 @@ trait MountOps {
   // realize isn't running because it's inside a None.foreach.
 
   /** Container element that will hold the root node as a child. Container is mounted as a child of <body> element */
-  var containerNode: dom.Element = null // see comment ^^^
+  var containerNode: dom.Element = null // see "On nullable variables" comment above ^^^
 
   /** Root node is the node that we test in `expectNode`. It is the only child of the `containerNode` element */
-  def rootNode: dom.Node = Option(containerNode).map(_.firstChild).orNull // see comment ^^^
+  def rootNode: dom.Node = Option(containerNode).map(_.firstChild).orNull // see "On nullable variables" comment above ^^^
 
   val defaultMountedElementClue = "root"
 
