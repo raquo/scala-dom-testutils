@@ -2,7 +2,7 @@
 
 _Scala DOM Test Utils_ provides a convenient, type-safe way to assert that a real Javascript DOM node matches a certain description using an extensible DSL.
 
-    "com.raquo" %%% "domtestutils" % "0.3"
+    "com.raquo" %%% "domtestutils" % "0.4"
 
 The types of DOM tags, attributes, properties and styles are provided by [Scala DOM Types](https://github.com/raquo/scala-dom-types), but you don't need to be using that library in your application code, _Scala DOM TestUtils_ can test any DOM node no matter how it was created. 
 
@@ -52,7 +52,7 @@ Canonical usage is to `mount` one DOM node / tree (e.g. the output of your compo
 
 Alternative is to call `expectNode(actualNode, expectedNode)`, for example if you only want to test a subtree of what you mounted.
 
-If the mechanics of `MountOps` do not work for you, you can bypass `MountOps` altogether and just call `ExpectedNode.checkNode(actualNode)` directly to get a list of errors. 
+If the mechanics of `MountOps` do not work for you, you can bypass `MountOps` altogether and just call `ExpectedNode.checkNode(actualNode)` directly to get a list of errors.
 
 **With ScalaTest**: Your test suite should extend the `MountSpec[Any]` trait. Use `mount` and `expectNode` methods in your test code. You can call `unmount` and then `mount` again within one test if you want to test multiple unrelated nodes (e.g. different variations in a loop). `AsyncMountSpec` provides similar functionality for async tests.
 

@@ -1,9 +1,9 @@
 enablePlugins(ScalaJSBundlerPlugin)
 
 libraryDependencies ++= Seq(
-  "com.raquo" %%% "domtypes" % "0.3",
-  "org.scala-js" %%% "scalajs-dom" % "0.9.3",
-  "org.scalatest" %%% "scalatest" % "3.0.3"
+  "com.raquo" %%% "domtypes" % "0.4.2",
+  "org.scala-js" %%% "scalajs-dom" % "0.9.4",
+  "org.scalatest" %%% "scalatest" % "3.0.4"
 )
 
 requiresDOM in Test := true

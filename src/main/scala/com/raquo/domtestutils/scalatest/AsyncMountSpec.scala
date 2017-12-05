@@ -3,9 +3,14 @@ package com.raquo.domtestutils.scalatest
 import com.raquo.domtestutils.MountOps
 import org.scalatest.{AsyncTestSuite, FutureOutcome}
 
+import scala.concurrent.ExecutionContext
+import scala.scalajs.concurrent.JSExecutionContext
+
 trait AsyncMountSpec
   extends AsyncTestSuite
   with MountOps {
+
+  implicit override def executionContext: ExecutionContext = JSExecutionContext.queue
 
   override def doAssert(condition: Boolean, message: String): Unit = {
     assert(condition, message)
