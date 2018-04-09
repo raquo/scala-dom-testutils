@@ -20,7 +20,7 @@ class TestableProp[V, DomV](val prop: Prop[V, DomV]) extends AnyVal {
 
   private[domtestutils] def nodePropIs(maybeExpectedValue: Option[V])(node: dom.Node): MaybeError = {
     val maybeActualValue = getProp(node)
-    if (node.isInstanceOf[dom.Element]) {
+    if (node.isInstanceOf[dom.html.Element]) {
       (maybeActualValue, maybeExpectedValue) match {
         case (None, None) => None
         case (None, Some(expectedValue)) =>
@@ -35,7 +35,7 @@ class TestableProp[V, DomV](val prop: Prop[V, DomV]) extends AnyVal {
           }
       }
     } else {
-      Some(s"Unable to verify Prop `${prop.name}` because node $node is not a DOM Element (might be a text node?)")
+      Some(s"Unable to verify Prop `${prop.name}` because node $node is not a DOM HTML Element (might be a text node?)")
     }
   }
 

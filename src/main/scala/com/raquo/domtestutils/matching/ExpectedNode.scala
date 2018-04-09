@@ -102,7 +102,7 @@ class ExpectedNode protected (
 
 object ExpectedNode {
 
-  def element(tag: Tag[_]): ExpectedNode = new ExpectedNode(maybeTagName = Some(tag.tagName))
+  def element(tag: Tag[_]): ExpectedNode = new ExpectedNode(maybeTagName = Some(tag.name))
 
   def element(tagName: String): ExpectedNode = new ExpectedNode(maybeTagName = Some(tagName))
 

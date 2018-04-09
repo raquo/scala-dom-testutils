@@ -16,7 +16,7 @@ class TestableAttr[V](val attr: Attr[V]) extends AnyVal {
 
   private[domtestutils] def nodeAttrIs(maybeExpectedValue: Option[V])(node: dom.Node): MaybeError = {
     node match {
-      case (element: dom.Element) =>
+      case (element: dom.html.Element) =>
         val maybeActualValue = getAttr(element)
         (maybeActualValue, maybeExpectedValue) match {
           case (None, None) => None
@@ -36,11 +36,11 @@ class TestableAttr[V](val attr: Attr[V]) extends AnyVal {
             Some(s"Attr `${attr.name}` should not be present: actual value ${repr(actualValue)}, expected to be missing")
         }
       case _ =>
-        Some(s"Unable to verify Attr `${attr.name}` because node $node is not a DOM Element (might be a text node?)")
+        Some(s"Unable to verify Attr `${attr.name}` because node $node is not a DOM HTML Element (might be a text node?)")
     }
   }
 
-  private[domtestutils] def getAttr(element: dom.Element): Option[V] = {
+  private[domtestutils] def getAttr(element: dom.html.Element): Option[V] = {
     // Note: for boolean-as-presence attributes, this returns `None` instead of `Some(false)` when the attribute is missing.
     if (element.hasAttribute(attr.name)) {
       Some(attr.codec.decode(element.getAttribute(attr.name)))
