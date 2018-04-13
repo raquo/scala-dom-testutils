@@ -1,7 +1,7 @@
 package com.raquo.domtestutils.matching
 
 import com.raquo.domtypes.generic.builders.Tag
-import com.raquo.domtypes.generic.keys.{Attr, Prop, Style}
+import com.raquo.domtypes.generic.keys.{Attr, Prop, Style, SvgAttr}
 import com.raquo.domtypes.generic.nodes.Comment
 
 trait RuleImplicits {
@@ -24,6 +24,10 @@ trait RuleImplicits {
 
   implicit def makeStyleTestable[V](style: Style[V]): TestableStyle[V] = {
     new TestableStyle(style)
+  }
+
+  implicit def makeSvgAttrTestable[V](svgAttr: SvgAttr[V]): TestableSvgAttr[V] = {
+    new TestableSvgAttr(svgAttr)
   }
 
   implicit def expectedNodeAsExpectedChildRule(expectedChild: ExpectedNode): Rule = (expectedParent: ExpectedNode) => {
