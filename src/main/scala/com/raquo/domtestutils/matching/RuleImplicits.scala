@@ -1,7 +1,7 @@
 package com.raquo.domtestutils.matching
 
 import com.raquo.domtypes.generic.builders.Tag
-import com.raquo.domtypes.generic.keys.{Attr, Prop, Style, SvgAttr}
+import com.raquo.domtypes.generic.keys.{HtmlAttr, Prop, Style, SvgAttr}
 import com.raquo.domtypes.generic.nodes.Comment
 
 trait RuleImplicits {
@@ -14,8 +14,8 @@ trait RuleImplicits {
     ExpectedNode.comment()
   }
 
-  implicit def makeAttrTestable[V](attr: Attr[V]): TestableAttr[V] = {
-    new TestableAttr(attr)
+  implicit def makeAttrTestable[V](attr: HtmlAttr[V]): TestableHtmlAttr[V] = {
+    new TestableHtmlAttr(attr)
   }
 
   implicit def makePropTestable[V, DomV](prop: Prop[V, DomV]): TestableProp[V, DomV] = {

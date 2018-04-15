@@ -1,17 +1,17 @@
 package com.raquo.domtestutils
 
 import com.raquo.domtypes.generic.codecs.{BooleanAsAttrPresenceCodec, BooleanAsTrueFalseStringCodec, IntAsStringCodec, StringAsIsCodec}
-import com.raquo.domtypes.generic.keys.Attr
+import com.raquo.domtypes.generic.keys.{HtmlAttr}
 import org.scalajs.dom
 
-class TestableAttrSpec extends UnitSpec {
+class TestableHtmlAttrSpec extends UnitSpec {
 
-  val href = new Attr("href", StringAsIsCodec)
-  val tabIndex = new Attr("tabindex", IntAsStringCodec)
-  val disabled = new Attr("disabled", BooleanAsAttrPresenceCodec)
-  val contentEditable = new Attr("contenteditable", BooleanAsTrueFalseStringCodec)
+  val href = new HtmlAttr("href", StringAsIsCodec)
+  val tabIndex = new HtmlAttr("tabindex", IntAsStringCodec)
+  val disabled = new HtmlAttr("disabled", BooleanAsAttrPresenceCodec)
+  val contentEditable = new HtmlAttr("contenteditable", BooleanAsTrueFalseStringCodec)
 
-  def setAttr[V](el: dom.Element, attr: Attr[V], value: V): Unit = {
+  def setAttr[V](el: dom.Element, attr: HtmlAttr[V], value: V): Unit = {
     val domValue = attr.codec.encode(value)
     if (domValue == null) {
       el.removeAttribute(attr.name)

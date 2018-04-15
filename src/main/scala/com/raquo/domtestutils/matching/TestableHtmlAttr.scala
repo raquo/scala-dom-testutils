@@ -1,10 +1,10 @@
 package com.raquo.domtestutils.matching
 
-import com.raquo.domtypes.generic.keys.Attr
+import com.raquo.domtypes.generic.keys.HtmlAttr
 import com.raquo.domtestutils.Utils.repr
 import org.scalajs.dom
 
-class TestableAttr[V](val attr: Attr[V]) extends AnyVal {
+class TestableHtmlAttr[V](val attr: HtmlAttr[V]) extends AnyVal {
 
   def is(expectedValue: V): Rule = (testNode: ExpectedNode) => {
     testNode.addCheck(nodeAttrIs(Some(expectedValue)))
