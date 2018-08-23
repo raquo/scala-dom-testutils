@@ -43,14 +43,17 @@ class TestableSvgAttr[V](val svgAttr: SvgAttr[V]) extends AnyVal {
 
   private[domtestutils] def getSvgAttr(element: dom.Element): Option[V] = {
     // Note: for boolean-as-presence attributes, this returns `None` instead of `Some(false)` when the attribute is missing.
-    if (element.hasAttributeNS(namespaceURI = TestableSvgAttr.svgNamespaceUri, localName = svgAttr.name)) {
-      Some(svgAttr.codec.decode(element.getAttributeNS(namespaceURI = TestableSvgAttr.svgNamespaceUri, localName = svgAttr.name)))
+    if (element.hasAttributeNS(namespaceURI = svgAttr.namespace.orNull, localName = localName)) {
+      Some(svgAttr.codec.decode(element.getAttributeNS(namespaceURI = svgAttr.namespace.orNull, localName = localName)))
     } else {
       None
     }
   }
-}
 
-object TestableSvgAttr {
-  val svgNamespaceUri = "http://www.w3.org/2000/svg"
+  private[domtestutils] def localName: String = {
+    val nsPrefixLength = svgAttr.name.indexOf(':')
+    if (nsPrefixLength > -1) {
+      svgAttr.name.substring(nsPrefixLength + 1)
+    } else svgAttr.name
+  }
 }
