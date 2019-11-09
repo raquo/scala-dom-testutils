@@ -4,9 +4,9 @@ normalizedName := "domtestutils"
 
 organization := "com.raquo"
 
-scalaVersion := "2.12.5"
+scalaVersion := "2.12.10"
 
-crossScalaVersions := Seq("2.11.12", "2.12.5")
+crossScalaVersions := Seq("2.11.12", "2.12.10", "2.13.1")
 
 homepage := Some(url("https://github.com/raquo/scala-dom-testutils"))
 
