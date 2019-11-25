@@ -68,8 +68,9 @@ class TestablePropSpec extends UnitSpec {
 
     setProp(el, classNames, Seq("foo", "bar"))
     (classNames nodePropIs Some(List("foo", "bar")))(el) shouldBe None
-    (classNames nodePropIs Some(List("foo", "bar", "baz")))(el) shouldBe Some("Prop `className` value is incorrect: actual value WrappedArray(foo, bar), expected value List(foo, bar, baz)")
-    (classNames nodePropIs None)(el) shouldBe Some("Prop `className` should be empty / not present: actual value WrappedArray(foo, bar), expected to be missing")
+    // @TODO[Elegance] Scala 2.13 has ArraySeq instead of WrappedArray, so we're making an ugly replace here.
+    (classNames nodePropIs Some(List("foo", "bar", "baz")))(el).map(_.replace("WrappedArray", "ArraySeq")) shouldBe Some("Prop `className` value is incorrect: actual value ArraySeq(foo, bar), expected value List(foo, bar, baz)")
+    (classNames nodePropIs None)(el).map(_.replace("WrappedArray", "ArraySeq")) shouldBe Some("Prop `className` should be empty / not present: actual value ArraySeq(foo, bar), expected to be missing")
 
     setProp(el, classNames, Seq())
     (classNames nodePropIs None)(el) shouldBe None
