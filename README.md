@@ -37,7 +37,7 @@ expectNode(
       "bizzare ",
       a like (
         href is "http://y2017.com",
-        title isEmpty, // Ensure that title attribute is not set
+        title.isEmpty, // Ensure that title attribute is not set
         "2017"
       ),
       span like " world"
