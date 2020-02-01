@@ -30,6 +30,8 @@ developers := List(
 
 sonatypeProfileName := "com.raquo"
 
+publishTo := sonatypePublishToBundle.value
+
 publishMavenStyle := true
 
 publishArtifact in Test := false
