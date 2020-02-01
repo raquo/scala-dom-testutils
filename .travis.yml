@@ -1,13 +1,20 @@
 os: linux
+
 node_js:
   - 12
+
 language: scala
+
 jdk:
-  - oraclejdk11
+  - openjdk11
+
 scala:
   - 2.11.12
   - 2.12.10
   - 2.13.1
+
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION test
 
 cache:
   yarn: true
