@@ -1,6 +1,7 @@
 package com.raquo.domtestutils
 
 import org.scalajs.dom
+import org.scalajs.dom.raw.WheelEventInit
 
 import scala.scalajs.js
 
@@ -12,15 +13,6 @@ trait EventSimulator {
 
   @deprecated("Not needed in jsdom anymore", "0.10")
   def simulateClick(target: dom.html.Element): Unit = {
-//    val pointerOpts = new dom.PointerEventInit {
-//      override val view: UndefOr[Window] = dom.window
-//    }
-//    pointerOpts.bubbles = true
-//    pointerOpts.cancelable = true
-//    pointerOpts.composed = false
-//    val evt = new dom.Event("click", pointerOpts)
-//    target.dispatchEvent(evt)
-
 //    val evt = dom.document.createEvent("HTMLEvents")
 //    evt.initEvent("click", canBubbleArg = true, cancelableArg = true)
 //    target.dispatchEvent(evt)
@@ -28,14 +20,35 @@ trait EventSimulator {
     target.click()
   }
 
+  // SVG elements don't have a click() method, so...
+  def simulateClick(target: dom.svg.Element): Unit = {
+    simulatePointerEvent("click", target)
+  }
+
+  // Text nodes don't have a click() method, so...
+  def simulateClick(target: dom.Text): Unit = {
+    simulatePointerEvent("click", target)
+  }
+
   def simulateScroll(target: dom.Node): Unit = {
-    val scrollOpts = new dom.PointerEventInit {
+    val scrollOpts = new WheelEventInit {
       override val view: js.UndefOr[dom.Window] = dom.window
     }
     scrollOpts.bubbles = true
     scrollOpts.cancelable = true
     scrollOpts.composed = false
     val evt = new dom.Event("scroll", scrollOpts)
+    target.dispatchEvent(evt)
+  }
+
+  private def simulatePointerEvent(eventType: String, target: dom.Node): Unit = {
+    val pointerOpts = new dom.PointerEventInit {
+      override val view: js.UndefOr[dom.Window] = dom.window
+    }
+    pointerOpts.bubbles = true
+    pointerOpts.cancelable = true
+    pointerOpts.composed = false
+    val evt = new dom.Event(eventType, pointerOpts)
     target.dispatchEvent(evt)
   }
 }
