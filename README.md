@@ -1,5 +1,5 @@
 # Scala DOM Test Utils
-[![Build Status](https://travis-ci.org/raquo/scala-dom-types.svg?branch=master)](https://travis-ci.org/raquo/scala-dom-testutils)
+[![Build Status](https://circleci.com/gh/raquo/scala-dom-testutils.svg?style=svg)](https://circleci.com/gh/raquo/scala-dom-testutils)
 ![Maven Central](https://img.shields.io/maven-central/v/com.raquo/domtestutils_sjs0.6_2.13.svg)
 
 
