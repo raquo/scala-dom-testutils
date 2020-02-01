@@ -17,11 +17,14 @@ jobs:
     steps:
       - checkout
 
-      # Download and cache dependencies
       - restore_cache:
           name: Restore Sbt Dependencies Cache
           keys:
             - sbt-deps--{{ checksum "build.sbt" }}
+
+      # Make sure this exists, or checksum will fail (we might want to commit yarn.lock...)
+      - run: touch yarn.lock
+
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
