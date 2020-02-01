@@ -2,6 +2,8 @@ package com.raquo.domtestutils
 
 import org.scalajs.dom
 
+import scala.scalajs.js
+
 trait EventSimulator {
 
   // @TODO[API] Make a simple simulator package
@@ -27,8 +29,13 @@ trait EventSimulator {
   }
 
   def simulateScroll(target: dom.Node): Unit = {
-    val evt = dom.document.createEvent("HTMLEvents")
-    evt.initEvent("scroll", canBubbleArg = true, cancelableArg = true)
+    val scrollOpts = new dom.PointerEventInit {
+      override val view: js.UndefOr[dom.Window] = dom.window
+    }
+    scrollOpts.bubbles = true
+    scrollOpts.cancelable = true
+    scrollOpts.composed = false
+    val evt = new dom.Event("scroll", scrollOpts)
     target.dispatchEvent(evt)
   }
 }
