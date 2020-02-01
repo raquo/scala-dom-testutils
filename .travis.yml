@@ -12,13 +12,11 @@ scala:
 cache:
   yarn: true
   directories:
+    - $HOME/.cache/coursier
     - $HOME/.ivy2/cache
-    - $HOME/.ivy2/local
-    - $HOME/.sbt/boot/
-    - $HOME/.sbt/launchers/
+    - $HOME/.sbt
 
 before_cache:
-  # Tricks to avoid unnecessary cache updates
-  # http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
-  - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
-  - find $HOME/.sbt -name "*.lock" -delete
+  - rm -fv $HOME/.ivy2/.sbt.ivy.lock
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+  - find $HOME/.sbt        -name "*.lock"               -print -delete
