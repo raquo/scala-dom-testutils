@@ -33,9 +33,9 @@ class TestablePropSpec extends UnitSpec {
   it ("tabIndex: integer prop") {
     val el = dom.document.createElement("a")
 
-    // -1 is the default value of tabIndex
-    (tabIndex nodePropIs Some(-1)) (el) shouldBe None
-    (tabIndex nodePropIs Some(5)) (el) shouldBe Some("Prop `tabIndex` value is incorrect: actual value -1, expected value 5")
+    // 0 is the default value of tabIndex
+    (tabIndex nodePropIs Some(0)) (el) shouldBe None
+    (tabIndex nodePropIs Some(5)) (el) shouldBe Some("Prop `tabIndex` value is incorrect: actual value 0, expected value 5")
 
     setProp(el, tabIndex, 10)
     (tabIndex nodePropIs Some(10)) (el) shouldBe None
