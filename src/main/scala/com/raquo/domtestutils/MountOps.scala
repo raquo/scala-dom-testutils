@@ -81,24 +81,24 @@ trait MountOps {
   def mount(clue: String, node: dom.Node): Unit = mount(node, clue)
 
   /** Remove root node from the DOM */
-  def unmount(): Unit = {
-    assertRootNodeMounted("unmount")
+  def unmount(clue: String = "unmount"): Unit = {
+    assertRootNodeMounted("unmount:" + clue)
     rootNode.parentNode.removeChild(rootNode)
     mountedElementClue = defaultMountedElementClue
   }
 
   /** Remove all traces of previous tests from the DOM: Unmount the root node and remove the container from the DOM */
-  def clearDOM(): Unit = {
+  def clearDOM(clue: String = "clearDOM"): Unit = {
     if (rootNode != null) {
-      unmount()
+      unmount("clearDOM:" + clue)
     }
     containerNode = null
     dom.document.body.textContent = "" // remove the container
   }
 
   /** Clear the DOM and create a new container. This should be called before each test. */
-  def resetDOM(): Unit = {
-    clearDOM()
+  def resetDOM(clue: String = "resetDOM"): Unit = {
+    clearDOM("resetDOM:" + clue)
     val newContainer = createContainer()
     dom.document.body.appendChild(newContainer)
     containerNode = newContainer

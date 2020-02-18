@@ -24,9 +24,9 @@ trait AsyncMountSpec
     * ScalaTest obscures error messages reported from the latter.
     */
   override def withFixture(test: NoArgAsyncTest): FutureOutcome = {
-    resetDOM() // Runs in the beginning of each test
+    resetDOM("async-withFixture-begin") // Runs in the beginning of each test
     super.withFixture(test).onCompletedThen(_ => {
-      clearDOM() // Runs at the end of each test, regardless of the result
+      clearDOM("async-withFixture-end") // Runs at the end of each test, regardless of the result
     })
   }
 }
