@@ -99,6 +99,6 @@ If all this is more hassle than it's worth for your use case, just forgo `MountO
 
 ## Author
 
-Nikita Gazarov – [raquo.com](http://raquo.com)
+Nikita Gazarov – [@raquo](https://twitter.com/raquo)
 
 License – MIT
