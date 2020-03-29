@@ -1,7 +1,7 @@
 enablePlugins(ScalaJSBundlerPlugin)
 
 libraryDependencies ++= Seq(
-  "com.raquo" %%% "domtypes" % "0.9.7",
+  "com.raquo" %%% "domtypes" % "0.10.0",
   "org.scalatest" %%% "scalatest" % "3.1.1",
 )
 
