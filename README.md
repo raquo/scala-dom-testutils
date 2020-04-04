@@ -1,5 +1,5 @@
 # Scala DOM Test Utils
-![Maven Central](https://img.shields.io/maven-central/v/com.raquo/domtestutils_sjs0.6_2.13.svg)
+![Maven Central](https://img.shields.io/maven-central/v/com.raquo/domtestutils_sjs1_2.13.svg)
 
 
 _Scala DOM Test Utils_ provides a convenient, type-safe way to assert that a real Javascript DOM node matches a certain description using an extensible DSL.
