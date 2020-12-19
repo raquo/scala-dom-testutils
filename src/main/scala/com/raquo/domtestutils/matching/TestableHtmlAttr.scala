@@ -2,6 +2,7 @@ package com.raquo.domtestutils.matching
 
 import com.raquo.domtypes.generic.keys.HtmlAttr
 import com.raquo.domtestutils.Utils.repr
+import app.tulz.diff.StringDiff
 import org.scalajs.dom
 
 class TestableHtmlAttr[V](val attr: HtmlAttr[V]) extends AnyVal {
@@ -24,7 +25,8 @@ class TestableHtmlAttr[V](val attr: HtmlAttr[V]) extends AnyVal {
             if (actualValue == expectedValue) {
               None
             } else {
-              Some(s"Attr `${attr.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}")
+              val diff = StringDiff(actualValue.toString, expectedValue.toString)
+              Some(s"Attr `${attr.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}. Diff:\n${diff}")
             }
           case (None, Some(expectedValue)) =>
             if (attr.codec.encode(expectedValue) == null) {

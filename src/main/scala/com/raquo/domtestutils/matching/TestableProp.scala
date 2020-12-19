@@ -1,5 +1,6 @@
 package com.raquo.domtestutils.matching
 
+import app.tulz.diff.StringDiff
 import com.raquo.domtestutils.Utils.repr
 import com.raquo.domtypes.generic.keys.Prop
 import org.scalajs.dom
@@ -29,7 +30,8 @@ class TestableProp[V, DomV](val prop: Prop[V, DomV]) extends AnyVal {
           Some(s"Prop `${prop.name}` should be empty / not present: actual value ${repr(actualValue)}, expected to be missing")
         case (Some(actualValue), Some(expectedValue)) =>
           if (actualValue != expectedValue) {
-            Some(s"Prop `${prop.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}")
+            val diff = StringDiff(actualValue.toString, expectedValue.toString)
+            Some(s"Prop `${prop.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}. Diff:\n${diff}")
           } else {
             None
           }

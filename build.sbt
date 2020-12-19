@@ -3,6 +3,7 @@ enablePlugins(ScalaJSBundlerPlugin)
 libraryDependencies ++= Seq(
   "com.raquo" %%% "domtypes" % "0.10.0",
   "org.scalatest" %%% "scalatest" % "3.1.1",
+  "app.tulz" %%% "stringdiff" % "0.1.0"
 )
 
 scalacOptions ++= Seq("-deprecation", "-feature", "-language:implicitConversions")

@@ -1,5 +1,6 @@
 package com.raquo.domtestutils.matching
 
+import app.tulz.diff.StringDiff
 import com.raquo.domtestutils.Utils.repr
 import com.raquo.domtypes.generic.keys.SvgAttr
 import org.scalajs.dom
@@ -25,7 +26,8 @@ class TestableSvgAttr[V](val svgAttr: SvgAttr[V]) extends AnyVal {
             if (actualValue == expectedValue) {
               None
             } else {
-              Some(s"SVG Attr `${svgAttr.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}")
+              val diff = StringDiff(actualValue.toString, expectedValue.toString)
+              Some(s"SVG Attr `${svgAttr.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}. Diff:\n${diff}")
             }
           case (None, Some(expectedValue)) =>
             if (svgAttr.codec.encode(expectedValue) == null) {
