@@ -11,7 +11,7 @@ trait RuleImplicits {
   }
 
   implicit def makeCommentBuilderTestable(commentBuilder: () => Comment): ExpectedNode = {
-    ExpectedNode.comment()
+    ExpectedNode.comment
   }
 
   implicit def makeAttrTestable[V](attr: HtmlAttr[V]): TestableHtmlAttr[V] = {
@@ -48,7 +48,7 @@ trait RuleImplicits {
     if (expectedParent.isComment) {
       expectedParent.addCheck(ExpectedNode.checkCommentText(childText))
     } else {
-      val expectedTextChild = ExpectedNode.textNode()
+      val expectedTextChild = ExpectedNode.textNode
       expectedTextChild.addCheck(ExpectedNode.checkText(childText))
       expectedParent.addExpectedChild(expectedTextChild)
     }

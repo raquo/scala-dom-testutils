@@ -22,17 +22,32 @@ class TestableProp[V, DomV](val prop: Prop[V, DomV]) extends AnyVal {
     val maybeActualValue = getProp(node)
     if (node.isInstanceOf[dom.html.Element]) {
       (maybeActualValue, maybeExpectedValue) match {
-        case (None, None) => None
-        case (None, Some(expectedValue)) =>
-          Some(s"Prop `${prop.name}` is empty or missing, expected ${repr(expectedValue)}")
-        case (Some(actualValue), None) =>
-          Some(s"Prop `${prop.name}` should be empty / not present: actual value ${repr(actualValue)}, expected to be missing")
+
         case (Some(actualValue), Some(expectedValue)) =>
-          if (actualValue != expectedValue) {
-            Some(s"Prop `${prop.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}")
-          } else {
+          if (actualValue == expectedValue) {
             None
+          } else {
+            Some(s"""|Prop `${prop.name}` value is incorrect:
+                     |- Actual:   ${repr(actualValue)}
+                     |- Expected: ${repr(expectedValue)}
+                     |""".stripMargin)
           }
+
+        case (None, Some(expectedValue)) =>
+          val rawActualValue = node.asInstanceOf[js.Dynamic].selectDynamic(prop.name)
+          Some(s"""|Prop `${prop.name}` is empty or missing:
+                   |- Actual (raw): ${repr(rawActualValue)}
+                   |- Expected:     ${repr(expectedValue)}
+                   |""".stripMargin)
+
+        case (Some(actualValue), None) =>
+          Some(s"""|Prop `${prop.name}` should be empty or not present:
+                   |- Actual:   ${repr(actualValue)}
+                   |- Expected: (empty / not present)
+                   |""".stripMargin)
+
+        case (None, None) =>
+          None
       }
     } else {
       Some(s"Unable to verify Prop `${prop.name}` because node $node is not a DOM HTML Element (might be a text node?)")

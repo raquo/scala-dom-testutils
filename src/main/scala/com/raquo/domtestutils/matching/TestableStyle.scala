@@ -15,14 +15,22 @@ class TestableStyle[V](val style: Style[V]) extends AnyVal {
   private[domtestutils] def nodeStyleIs(expectedValue: V)(node: dom.Node): MaybeError = {
     val maybeActualValue = getStyle(node)
     maybeActualValue match {
+
       case Some(actualValue) =>
         if (actualValue == expectedValue) {
           None
         } else {
-          Some(s"Style `${style.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}")
+          Some(s"""|Style `${style.name}` value is incorrect:
+                   |- Actual:   ${repr(actualValue)}
+                   |- Expected: ${repr(expectedValue)}
+                   |""".stripMargin)
         }
+
       case None =>
-        Some(s"Style `${style.name}` is completely missing, expected ${repr(expectedValue)}")
+        Some(s"""|Style `${style.name}` is completely missing:
+                 |- Actual:   (style missing)
+                 |- Expected: ${repr(expectedValue)}
+                 |""".stripMargin)
     }
   }
 

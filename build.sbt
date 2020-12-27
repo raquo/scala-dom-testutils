@@ -13,6 +13,8 @@ requireJsDomEnv in Test := true
 
 useYarn := true
 
+parallelExecution in Test := false
+
 scalaJSLinkerConfig in (Compile, fastOptJS) ~= { _.withSourceMap(false) }
 
 scalaJSLinkerConfig in (Compile, fullOptJS) ~= { _.withSourceMap(false) }

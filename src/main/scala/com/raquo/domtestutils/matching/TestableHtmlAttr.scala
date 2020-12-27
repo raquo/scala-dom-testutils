@@ -16,25 +16,41 @@ class TestableHtmlAttr[V](val attr: HtmlAttr[V]) extends AnyVal {
 
   private[domtestutils] def nodeAttrIs(maybeExpectedValue: Option[V])(node: dom.Node): MaybeError = {
     node match {
+
       case (element: dom.html.Element) =>
         val maybeActualValue = getAttr(element)
         (maybeActualValue, maybeExpectedValue) match {
-          case (None, None) => None
+
           case (Some(actualValue), Some(expectedValue)) =>
             if (actualValue == expectedValue) {
               None
             } else {
-              Some(s"Attr `${attr.name}` value is incorrect: actual value ${repr(actualValue)}, expected value ${repr(expectedValue)}")
+              Some(s"""|Attr `${attr.name}` value is incorrect:
+                       |- Actual:   ${repr(actualValue)}
+                       |- Expected: ${repr(expectedValue)}
+                       |""".stripMargin)
             }
+
           case (None, Some(expectedValue)) =>
             if (attr.codec.encode(expectedValue) == null) {
               None // Note: `encode` returning `null` is exactly how missing attribute values are defined, e.g. in BooleanAsAttrPresenceCodec
             } else {
-              Some(s"Attr `${attr.name}` is missing, expected ${repr(expectedValue)}")
+              Some(s"""|Attr `${attr.name}` is missing:
+                       |- Actual:   (no attribute)
+                       |- Expected: ${repr(expectedValue)}
+                       |""".stripMargin)
             }
+
           case (Some(actualValue), None) =>
-            Some(s"Attr `${attr.name}` should not be present: actual value ${repr(actualValue)}, expected to be missing")
+            Some(s"""|Attr `${attr.name}` should not be present:
+                     |- Actual:   ${repr(actualValue)}
+                     |- Expected: (no attribute)
+                     |""".stripMargin)
+
+          case (None, None) =>
+            None
         }
+
       case _ =>
         Some(s"Unable to verify Attr `${attr.name}` because node $node is not a DOM HTML Element (might be a text node?)")
     }
