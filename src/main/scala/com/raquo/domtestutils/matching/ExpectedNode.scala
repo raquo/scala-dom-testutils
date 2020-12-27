@@ -41,9 +41,13 @@ class ExpectedNode protected (
     expectedChildrenBuffer.append(child)
   }
 
-  def like(rules: Rule*): ExpectedNode = {
-    rules.foreach(rule => rule(this))
+  def of(rules: Rule*): ExpectedNode = {
+    rules.foreach(rule => rule.applyTo(this))
     this
+  }
+
+  def like(rules: Rule*): ExpectedNode = {
+    of(rules: _*)
   }
 
   def checkNodeType(actualNode: dom.Node): MaybeError = {
@@ -106,9 +110,9 @@ object ExpectedNode {
 
   def element(tagName: String): ExpectedNode = new ExpectedNode(maybeTagName = Some(tagName))
 
-  def comment(): ExpectedNode = new ExpectedNode(isComment = true)
+  def comment: ExpectedNode = new ExpectedNode(isComment = true)
 
-  def textNode(): ExpectedNode = new ExpectedNode(isTextNode = true)
+  def textNode: ExpectedNode = new ExpectedNode(isTextNode = true)
 
   def withClue(clue: String, message: String): String = {
     s"[$clue]: $message"

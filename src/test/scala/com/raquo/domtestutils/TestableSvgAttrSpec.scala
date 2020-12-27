@@ -25,21 +25,21 @@ class TestableSvgAttrSpec extends UnitSpec {
     val el = dom.document.createElementNS(svgNamespaceUri, "svg")
 
     (cls nodeSvgAttrIs None) (el) shouldBe None
-    (cls nodeSvgAttrIs Some("class1")) (el) shouldBe Some("SVG Attr `className` is missing, expected \"class1\"")
+    (cls nodeSvgAttrIs Some("class1")) (el) shouldBe Some("SVG Attr `className` is missing:\n- Actual:   (no attribute)\n- Expected: \"class1\"\n")
 
     setAttr(el, cls, "class1")
     (cls nodeSvgAttrIs Some("class1")) (el) shouldBe None
-    (cls nodeSvgAttrIs Some("class2")) (el) shouldBe Some("SVG Attr `className` value is incorrect: actual value \"class1\", expected value \"class2\"")
+    (cls nodeSvgAttrIs Some("class2")) (el) shouldBe Some("SVG Attr `className` value is incorrect:\n- Actual:   \"class1\"\n- Expected: \"class2\"\n")
   }
 
   it("xlinkHref: namespaced string attr") {
     val el = dom.document.createElementNS(svgNamespaceUri, "svg")
 
     (xlinkHref nodeSvgAttrIs None) (el) shouldBe None
-    (xlinkHref nodeSvgAttrIs Some("http://example.com/1")) (el) shouldBe Some("SVG Attr `xlink:href` is missing, expected \"http://example.com/1\"")
+    (xlinkHref nodeSvgAttrIs Some("http://example.com/1")) (el) shouldBe Some("SVG Attr `xlink:href` is missing:\n- Actual:   (no attribute)\n- Expected: \"http://example.com/1\"\n")
 
     setAttr(el, xlinkHref, "http://example.com/1")
     (xlinkHref nodeSvgAttrIs Some("http://example.com/1")) (el) shouldBe None
-    (xlinkHref nodeSvgAttrIs Some("http://example.com/2")) (el) shouldBe Some("SVG Attr `xlink:href` value is incorrect: actual value \"http://example.com/1\", expected value \"http://example.com/2\"")
+    (xlinkHref nodeSvgAttrIs Some("http://example.com/2")) (el) shouldBe Some("SVG Attr `xlink:href` value is incorrect:\n- Actual:   \"http://example.com/1\"\n- Expected: \"http://example.com/2\"\n")
   }
 }

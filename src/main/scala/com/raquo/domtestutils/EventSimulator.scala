@@ -41,6 +41,7 @@ trait EventSimulator {
     target.dispatchEvent(evt)
   }
 
+  /** @param eventType e.g. "click" */
   private def simulatePointerEvent(eventType: String, target: dom.Node): Unit = {
     val pointerOpts = new dom.PointerEventInit {
       override val view: js.UndefOr[dom.Window] = dom.window
