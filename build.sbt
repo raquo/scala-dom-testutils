@@ -15,6 +15,8 @@ useYarn := true
 
 parallelExecution in Test := false
 
+version in installJsdom := "16.4.0"
+
 scalaJSLinkerConfig in (Compile, fastOptJS) ~= { _.withSourceMap(false) }
 
 scalaJSLinkerConfig in (Compile, fullOptJS) ~= { _.withSourceMap(false) }
