@@ -1,21 +1,19 @@
 enablePlugins(ScalaJSBundlerPlugin)
 
 libraryDependencies ++= Seq(
-  "com.raquo" %%% "domtypes" % "0.10.0",
-  "org.scalatest" %%% "scalatest" % "3.1.1",
+  "com.raquo" %%% "domtypes" % "0.11.0",
+  "org.scalatest" %%% "scalatest" % "3.2.2",
 )
 
 scalacOptions ++= Seq("-deprecation", "-feature", "-language:implicitConversions")
 
-version in installJsdom := "16.2.0"
-
 requireJsDomEnv in Test := true
+
+version in installJsdom := "16.4.0"
 
 useYarn := true
 
 parallelExecution in Test := false
-
-version in installJsdom := "16.4.0"
 
 scalaJSLinkerConfig in (Compile, fastOptJS) ~= { _.withSourceMap(false) }
 
