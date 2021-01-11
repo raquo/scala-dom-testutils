@@ -4,8 +4,7 @@
 
 _Scala DOM Test Utils_ provides a convenient, type-safe way to assert that a real Javascript DOM node matches a certain description using an extensible DSL.
 
-    "com.raquo" %%% "domtestutils" % "0.12.0"  // Scala.js 1.x only
-    "com.raquo" %%% "domtestutils" % "0.10.1"  // Scala.js 0.6.x only
+    "com.raquo" %%% "domtestutils" % "0.13.0"  // Scala.js 1.x only
 
 The types of DOM tags, attributes, properties and styles are provided by [Scala DOM Types](https://github.com/raquo/scala-dom-types), but you don't need to be using that library in your application code, _Scala DOM TestUtils_ can test any DOM node no matter how it was created. 
 
@@ -30,17 +29,17 @@ mount(jsDomNode, "optional clue to show on failure")
  
 // Assert that the mounted node matches the provided description (this test will pass given the input above)
 expectNode(
-  div like(
+  div.of(
     rel is "yolo", // Ensure that rel attribute is "yolo". Note: assertions for properties and styles work similarly 
-    span like "Hello, ", // Ensure the this element contains just one text node: "Hello, "
-    p like (
+    span.of("Hello, "), // Ensure the this element contains just one text node: "Hello, "
+    p.of(
       "bizzare ",
-      a like (
+      a.of(
         href is "http://y2017.com",
         title.isEmpty, // Ensure that title attribute is not set
         "2017"
       ),
-      span like " world"
+      span.of(" world")
     ),
     hr // Just check existence of element and tag name. Equivalent to `hr like ()` 
   )
