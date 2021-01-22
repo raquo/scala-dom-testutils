@@ -4,9 +4,9 @@ normalizedName := "domtestutils"
 
 organization := "com.raquo"
 
-scalaVersion := "2.13.4"
+scalaVersion := Versions.Scala_2_13
 
-crossScalaVersions := Seq("2.12.12", "2.13.4")
+crossScalaVersions := Seq(Versions.Scala_2_13, Versions.Scala_2_12)
 
 homepage := Some(url("https://github.com/raquo/scala-dom-testutils"))
 
@@ -36,18 +36,8 @@ publishMavenStyle := true
 
 publishArtifact in Test := false
 
-publishTo := {
-  val nexus = "https://oss.sonatype.org/"
-  if (isSnapshot.value)
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
-
 releaseCrossBuild := true
 
 pomIncludeRepository := { _ => false }
-
-useGpg := false
 
 releasePublishArtifactsAction := PgpKeys.publishSigned.value
