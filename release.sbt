@@ -28,6 +28,24 @@ developers := List(
   )
 )
 
+releaseProcess := {
+  import ReleaseTransformations._
+  Seq[ReleaseStep](
+    checkSnapshotDependencies,
+    inquireVersions,
+    runClean,
+    runTest,
+    setReleaseVersion,
+    commitReleaseVersion,
+    tagRelease,
+    releaseStepCommandAndRemaining("+publishSigned"),
+    releaseStepCommand("sonatypeBundleRelease"),
+    setNextVersion,
+    commitNextVersion,
+    pushChanges
+  )
+}
+
 sonatypeProfileName := "com.raquo"
 
 publishTo := sonatypePublishToBundle.value
