@@ -4,7 +4,7 @@
 
 _Scala DOM Test Utils_ provides a convenient, type-safe way to assert that a real Javascript DOM node matches a certain description using an extensible DSL.
 
-    "com.raquo" %%% "domtestutils" % "0.13.0"  // Scala.js 1.3.1+ only
+    "com.raquo" %%% "domtestutils" % "0.14.3"  // Scala.js 1.1.0+ only
 
 The types of DOM tags, attributes, properties and styles are provided by [Scala DOM Types](https://github.com/raquo/scala-dom-types), but you don't need to be using that library in your application code, _Scala DOM TestUtils_ can test any DOM node no matter how it was created. 
 
@@ -77,21 +77,20 @@ If all this is more hassle than it's worth for your use case, just forgo `MountO
 
 
 
-## TODO
+## Project Status
 
-* Docs: Add examples without Scala DOM Builder, in this library's own test suite
-* Docs: Explain in more detail how to make assertions
-* Docs: Explain the basics of Scala DOM Types node / attr / etc. types
-* Docs: Explain how to create your own custom rules
-* Docs: Document available assertions
-* Feature: Add `anyChildren` and/or `maybeMoreChildren` to allow shallow / focused matching
+This project exists only to serve the needs of testing [Laminar](https://github.com/raquo/Laminar) and the basic needs of testing Laminar applications. Emphasis on _basic_. This is not going to be a full fledged test kit. I just don't have the time for this. If you want something bigger, you'll need to fork this and/or create your own. It's a very small project anyway.
 
+
+## Versioning
+
+There is no promise of any backwards compatibility in this particular project. I _roughly_ align versions with Scala DOM Types for my own convenience.
 
 
 ## My Related Projects
 
 - [Scala DOM Types](https://github.com/raquo/scala-dom-types) – Type definitions that we use for all the HTML tags, attributes, properties, and styles
-- [Laminar](https://github.com/raquo/laminar) – Reactive UI library based on _Scala DOM Types_
+- [Laminar](https://github.com/raquo/Laminar) – Reactive UI library based on _Scala DOM Types_
 - [Scala DOM Builder](https://github.com/raquo/scala-dom-builder) – Low-level library for building and manipulating DOM trees
 
 

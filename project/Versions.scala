@@ -8,7 +8,7 @@ object Versions {
 
   val Scala_3_RC1 = "3.0.0-RC1-bin-20210113-8345078-NIGHTLY"
 
-  val ScalaDomTypes = "0.12.1"
+  val ScalaDomTypes = "0.13.0"
 
   val ScalaTest = "3.2.2"
 

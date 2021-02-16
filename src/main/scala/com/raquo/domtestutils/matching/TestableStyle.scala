@@ -3,42 +3,55 @@ package com.raquo.domtestutils.matching
 import com.raquo.domtestutils.Utils.repr
 import com.raquo.domtypes.generic.keys.Style
 import org.scalajs.dom
+import org.scalajs.dom.raw.CSSStyleDeclaration
 
 import scala.scalajs.js
+import scala.scalajs.js.|
 
 class TestableStyle[V](val style: Style[V]) extends AnyVal {
 
-  def is(expectedValue: V): Rule = (testNode: ExpectedNode) => {
-    testNode.addCheck(nodeStyleIs(expectedValue))
+  def is(expectedValue: V | String): Rule = (testNode: ExpectedNode) => {
+    // @TODO[Integrity] I hope this toString is ok. We don't use any fancy types for CSS anyway.
+    testNode.addCheck(nodeStyleIs(expectedValue.toString))
   }
 
-  private[domtestutils] def nodeStyleIs(expectedValue: V)(node: dom.Node): MaybeError = {
-    val maybeActualValue = getStyle(node)
-    maybeActualValue match {
+  private[domtestutils] def nodeStyleIs(expectedValue: String)(node: dom.Node): MaybeError = {
+    val actualValue = getStyle(node)
 
-      case Some(actualValue) =>
-        if (actualValue == expectedValue) {
-          None
-        } else {
-          Some(s"""|Style `${style.name}` value is incorrect:
-                   |- Actual:   ${repr(actualValue)}
-                   |- Expected: ${repr(expectedValue)}
-                   |""".stripMargin)
-        }
 
-      case None =>
-        Some(s"""|Style `${style.name}` is completely missing:
-                 |- Actual:   (style missing)
-                 |- Expected: ${repr(expectedValue)}
-                 |""".stripMargin)
+    if (actualValue == expectedValue) {
+      None
+    } else {
+      if (actualValue.nonEmpty) {
+        Some(
+          s"""|Style `${style.name}` value is incorrect:
+              |- Actual:   ${repr(actualValue)}
+              |- Expected: ${repr(expectedValue)}
+              |""".stripMargin
+        )
+      } else {
+        Some(
+          s"""|Style `${style.name}` is missing:
+              |- Actual:   (style missing, or empty string)
+              |- Expected: ${repr(expectedValue)}
+              |""".stripMargin
+        )
+      }
     }
   }
 
-  private[domtestutils] def getStyle(node: dom.Node): Option[V] = {
-    // @TODO[Integrity] Pattern match to dom.html.Element instead, and get style from there
+  private[domtestutils] def getStyle(node: dom.Node): String = {
+    // Sadly this is the best we can do because can't detect if SVGStylable is
+    // Note: this returns an empty string even for styles that aren't set.
+    // Not sure if we can do better...
     node.asInstanceOf[js.Dynamic]
       .selectDynamic("style")
-      .selectDynamic(style.name)
-      .asInstanceOf[js.UndefOr[V]].toOption
+      .asInstanceOf[js.UndefOr[CSSStyleDeclaration]]
+      .flatMap { css =>
+        css.getPropertyValue(style.name)
+      }
+      .toOption
+      .getOrElse("")
   }
+
 }
