@@ -18,15 +18,15 @@ scalacOptions ++= Seq(
   }
 )
 
-requireJsDomEnv in Test := true
+(Test / requireJsDomEnv) := true
 
-version in installJsdom := Versions.JsDom
+(installJsdom / version) := Versions.JsDom
 
 useYarn := true
 
-parallelExecution in Test := false
+(Test / parallelExecution) := false
 
-scalaJSLinkerConfig in (Compile, fastOptJS) ~= { _.withSourceMap(false) }
+(Compile / fastOptJS / scalaJSLinkerConfig) ~= { _.withSourceMap(false) }
 
-scalaJSLinkerConfig in (Compile, fullOptJS) ~= { _.withSourceMap(false) }
+(Compile / fullOptJS / scalaJSLinkerConfig) ~= { _.withSourceMap(false) }
 

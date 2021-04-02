@@ -6,7 +6,7 @@ organization := "com.raquo"
 
 scalaVersion := Versions.Scala_2_13
 
-crossScalaVersions := Seq(Versions.Scala_2_13, Versions.Scala_2_12)
+crossScalaVersions := Seq(Versions.Scala_3_RC2, Versions.Scala_2_13, Versions.Scala_2_12)
 
 homepage := Some(url("https://github.com/raquo/scala-dom-testutils"))
 
@@ -52,7 +52,7 @@ publishTo := sonatypePublishToBundle.value
 
 publishMavenStyle := true
 
-publishArtifact in Test := false
+(Test / publishArtifact) := false
 
 releaseCrossBuild := true
 
