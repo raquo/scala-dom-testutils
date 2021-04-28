@@ -2,7 +2,7 @@ enablePlugins(ScalaJSBundlerPlugin)
 
 libraryDependencies ++= Seq(
   "com.raquo" %%% "domtypes" % Versions.ScalaDomTypes,
-  "org.scalatest" %%% "scalatest" % Versions.ScalaTest,
+  "org.scalatest" %%% "scalatest" % (if (scalaVersion.value == Versions.Scala_3_RC3) "3.2.8" else "3.2.7"),
 )
 
 scalacOptions ++= Seq(
