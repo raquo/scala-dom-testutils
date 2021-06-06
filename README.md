@@ -60,9 +60,9 @@ Alternative is to call `expectNode(actualNode, expectedNode)`, for example if yo
 
 If the mechanics of `MountOps` do not work for you, you can bypass `MountOps` altogether and just call `ExpectedNode.checkNode(actualNode)` directly to get a list of errors.
 
-**With ScalaTest**: Your test suite should extend the `MountSpec[Any]` trait. Use `mount` and `expectNode` methods in your test code. You can call `unmount` and then `mount` again within one test if you want to test multiple unrelated nodes (e.g. different variations in a loop). `AsyncMountSpec` provides similar functionality for async tests.
+**With MUnit**: Your test suite should extend the `MountSpec` trait. Use `mount` and `expectNode` methods in your test code. You can call `unmount` and then `mount` again within one test if you want to test multiple unrelated nodes (e.g. different variations in a loop).
 
-**Without ScalaTest**: Write a tiny adapter like `MountSpec` for your test framework, which would:
+**Without MUnit**: Write a tiny adapter like `MountSpec` for your test framework, which would:
  
 - Extend `MountOps` and provide `doAssert` / `doFail` implementations specific to your test framework
 - Call `resetDOM` in the beginning of each test, and `clearDOM` at the end of each test.

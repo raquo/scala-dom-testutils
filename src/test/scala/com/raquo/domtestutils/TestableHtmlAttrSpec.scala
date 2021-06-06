@@ -20,7 +20,7 @@ class TestableHtmlAttrSpec extends UnitSpec {
     }
   }
 
-  it("href: standard string attr") {
+  test("href: standard string attr") {
     val el = dom.document.createElement("a")
 
     (href nodeAttrIs None) (el) shouldBe None
@@ -31,7 +31,7 @@ class TestableHtmlAttrSpec extends UnitSpec {
     (href nodeAttrIs Some("http://expected.com")) (el) shouldBe Some("Attr `href` value is incorrect:\n- Actual:   \"http://example.com\"\n- Expected: \"http://expected.com\"\n")
   }
 
-  it ("tabIndex: integer attr") {
+  test("tabIndex: integer attr") {
     val el = dom.document.createElement("a")
 
     (tabIndex nodeAttrIs None) (el) shouldBe None
@@ -42,7 +42,7 @@ class TestableHtmlAttrSpec extends UnitSpec {
     (tabIndex nodeAttrIs Some(5)) (el) shouldBe Some("Attr `tabindex` value is incorrect:\n- Actual:   10\n- Expected: 5\n")
   }
 
-  it ("disabled: boolean-as-presence (absence is the same as false)") {
+  test("disabled: boolean-as-presence (absence is the same as false)") {
     val el = dom.document.createElement("a")
 
     (disabled nodeAttrIs Some(false)) (el) shouldBe None
@@ -60,7 +60,7 @@ class TestableHtmlAttrSpec extends UnitSpec {
     (disabled nodeAttrIs Some(true)) (el) shouldBe Some("Attr `disabled` is missing:\n- Actual:   (no attribute)\n- Expected: true\n")
   }
 
-  it ("contentEditable: boolean as true/false string attr") {
+  test("contentEditable: boolean as true/false string attr") {
     val el = dom.document.createElement("a")
 
     (contentEditable nodeAttrIs Some(false))(el) shouldBe Some("Attr `contenteditable` is missing:\n- Actual:   (no attribute)\n- Expected: false\n")

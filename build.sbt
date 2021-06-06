@@ -2,7 +2,7 @@ enablePlugins(ScalaJSBundlerPlugin)
 
 libraryDependencies ++= Seq(
   "com.raquo" %%% "domtypes" % Versions.ScalaDomTypes,
-  "org.scalatest" %%% "scalatest" % Versions.ScalaTest,
+  "org.scalameta" %%% "munit" % Versions.MUnit,
 )
 
 scalacOptions ++= Seq(
@@ -17,6 +17,8 @@ scalacOptions ++= Seq(
     s"${sourcesOptionName}:$localSourcesPath->$remoteSourcesPath"
   }
 )
+
+(Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) })
 
 (Test / requireJsDomEnv) := true
 

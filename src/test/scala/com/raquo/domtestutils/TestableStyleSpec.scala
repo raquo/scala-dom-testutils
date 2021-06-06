@@ -20,7 +20,7 @@ class TestableStyleSpec extends UnitSpec {
       }
   }
 
-  it ("background-color: string style") {
+  test("background-color: string style") {
     val el = dom.document.createElement("div").asInstanceOf[dom.html.Div]
 
     (backgroundColor nodeStyleIs "") (el) shouldBe None
@@ -42,7 +42,7 @@ class TestableStyleSpec extends UnitSpec {
     )
   }
 
-  it ("z-index: int style") {
+  test("z-index: int style") {
     val el = dom.document.createElement("div").asInstanceOf[dom.html.Div]
 
     (zIndex nodeStyleIs "") (el) shouldBe None

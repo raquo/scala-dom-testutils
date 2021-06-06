@@ -18,7 +18,7 @@ class TestablePropSpec extends UnitSpec {
     el.asInstanceOf[js.Dynamic].updateDynamic(prop.name)(domValue)
   }
 
-  it ("href: standard string prop") {
+  test("href: standard string prop") {
     val el = dom.document.createElement("a").asInstanceOf[dom.html.Anchor]
 
     (href nodePropIs None) (el) shouldBe None
@@ -30,7 +30,7 @@ class TestablePropSpec extends UnitSpec {
     (href nodePropIs Some("http://expected.com/")) (el) shouldBe Some("Prop `href` value is incorrect:\n- Actual:   \"http://example.com/\"\n- Expected: \"http://expected.com/\"\n")
   }
 
-  it ("tabIndex: integer prop") {
+  test("tabIndex: integer prop") {
     val el = dom.document.createElement("a")
 
     // 0 is the default value of tabIndex
@@ -42,7 +42,7 @@ class TestablePropSpec extends UnitSpec {
     (tabIndex nodePropIs Some(5)) (el) shouldBe Some("Prop `tabIndex` value is incorrect:\n- Actual:   10\n- Expected: 5\n")
   }
 
-  it ("disabled: boolean prop") {
+  test("disabled: boolean prop") {
     val el = dom.document.createElement("a")
 
     (disabled nodePropIs Some(false)) (el) shouldBe Some("Prop `disabled` is empty or missing:\n- Actual (raw): undefined\n- Expected:     false\n")
@@ -60,7 +60,7 @@ class TestablePropSpec extends UnitSpec {
     (disabled nodePropIs Some(true)) (el) shouldBe Some("Prop `disabled` value is incorrect:\n- Actual:   false\n- Expected: true\n")
   }
 
-  it ("classNames: list as string prop") {
+  test("classNames: list as string prop") {
     val el = dom.document.createElement("a")
 
     (classNames nodePropIs None)(el) shouldBe None
