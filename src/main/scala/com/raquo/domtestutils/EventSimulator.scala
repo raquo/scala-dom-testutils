@@ -1,7 +1,7 @@
 package com.raquo.domtestutils
 
 import org.scalajs.dom
-import org.scalajs.dom.raw.WheelEventInit
+import org.scalajs.dom.WheelEventInit
 
 import scala.scalajs.js
 

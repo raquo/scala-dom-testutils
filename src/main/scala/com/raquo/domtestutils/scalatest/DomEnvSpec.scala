@@ -1,24 +1,25 @@
-package com.raquo.domtestutils.mu
+package com.raquo.domtestutils.scalatest
 
 import com.raquo.domtestutils.{EventSimulator, Utils}
 import org.scalajs.dom
+import org.scalatest.funspec.AnyFunSpec
 
 /**
   * Sanity checks on the testing environment.
   * This does not use this library at all.
   */
-class DomEnvSpec extends munit.FunSuite with EventSimulator with Utils {
+class DomEnvSpec extends AnyFunSpec with EventSimulator with Utils {
 
-  test("renders elements with attributes") {
+  it("renders elements with attributes") {
     val spanId = randomString("spanId_")
     val span = dom.document.createElement("span")
     span.setAttribute("id", spanId)
     dom.document.body.appendChild(span)
 
-    assertEquals(span.id, spanId)
+    assertResult(expected = spanId)(actual = span.id)
   }
 
-  test("handles click events") {
+  it("handles click events") {
     var callbackCount = 0
 
     def testEvent(ev: dom.MouseEvent): Unit = {
@@ -37,15 +38,15 @@ class DomEnvSpec extends munit.FunSuite with EventSimulator with Utils {
 
     // Direct hit
     div.click()
-    assertEquals(callbackCount, 1)
+    assertResult(expected = 1)(actual = callbackCount)
 
     // Click event should bubble up
     span.click()
-    assertEquals(callbackCount, 2)
+    assertResult(expected = 2)(actual = callbackCount)
 
     // Click should not be counted on unrelated div
     div2.click()
-    assertEquals(callbackCount, 2)
+    assertResult(expected = 2)(actual = callbackCount)
   }
 }
 

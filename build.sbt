@@ -2,7 +2,7 @@ enablePlugins(ScalaJSBundlerPlugin)
 
 libraryDependencies ++= Seq(
   "com.raquo" %%% "domtypes" % Versions.ScalaDomTypes,
-  "org.scalameta" %%% "munit" % Versions.MUnit,
+  "org.scalatest" %%% "scalatest" % Versions.ScalaTest
 )
 
 scalacOptions ++= Seq(

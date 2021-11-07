@@ -2,7 +2,7 @@ package com.raquo.domtestutils
 
 import com.raquo.domtypes.generic.keys.Style
 import org.scalajs.dom
-import org.scalajs.dom.raw.CSSStyleDeclaration
+import org.scalajs.dom.CSSStyleDeclaration
 
 import scala.scalajs.js
 
@@ -20,7 +20,7 @@ class TestableStyleSpec extends UnitSpec {
       }
   }
 
-  test("background-color: string style") {
+  it("background-color: string style") {
     val el = dom.document.createElement("div").asInstanceOf[dom.html.Div]
 
     (backgroundColor nodeStyleIs "") (el) shouldBe None
@@ -42,7 +42,7 @@ class TestableStyleSpec extends UnitSpec {
     )
   }
 
-  test("z-index: int style") {
+  it("z-index: int style") {
     val el = dom.document.createElement("div").asInstanceOf[dom.html.Div]
 
     (zIndex nodeStyleIs "") (el) shouldBe None

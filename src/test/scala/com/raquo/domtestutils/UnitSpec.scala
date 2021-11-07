@@ -1,10 +1,8 @@
 package com.raquo.domtestutils
 
-import com.raquo.domtestutils.matching.{AssertSyntax, RuleImplicits}
-import munit.FunSuite
+import com.raquo.domtestutils.matching.RuleImplicits
+import com.raquo.domtestutils.scalatest.Matchers
+import org.scalatest.funspec.AnyFunSpec
 
-class UnitSpec extends FunSuite with RuleImplicits {
-
-  implicit def useAssertSyntax[A](v: A): AssertSyntax[A] = new AssertSyntax(v)
-}
+class UnitSpec extends AnyFunSpec with Matchers with RuleImplicits
 

@@ -141,7 +141,7 @@ object ExpectedNode {
     }
   }
 
-  def nodeListToList(nodeList: dom.NodeList): List[dom.Node] = {
+  def nodeListToList(nodeList: dom.NodeList[dom.Node]): List[dom.Node] = {
     // @TODO[Polish] Move into JSUtils
     var result: List[dom.Node] = Nil
     var i = 0

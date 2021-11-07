@@ -1,10 +1,10 @@
 # Scala DOM Test Utils
-![Maven Central](https://img.shields.io/maven-central/v/com.raquo/domtestutils_sjs1_2.13.svg)
+![Maven Central](https://img.shields.io/maven-central/v/com.raquo/domtestutils_sjs1_3.svg)
 
 
 _Scala DOM Test Utils_ provides a convenient, type-safe way to assert that a real Javascript DOM node matches a certain description using an extensible DSL.
 
-    "com.raquo" %%% "domtestutils" % "0.14.8"  // Scala.js 1.5.0+ only
+    "com.raquo" %%% "domtestutils" % "0.15.0"  // Scala.js 1.7.1+ only
 
 The types of DOM tags, attributes, properties and styles are provided by [Scala DOM Types](https://github.com/raquo/scala-dom-types), but you don't need to be using that library in your application code, _Scala DOM TestUtils_ can test any DOM node no matter how it was created. 
 
@@ -79,7 +79,7 @@ If all this is more hassle than it's worth for your use case, just forgo `MountO
 
 ## Project Status
 
-This project exists only to serve the needs of testing [Laminar](https://github.com/raquo/Laminar) and the basic needs of testing Laminar applications. Emphasis on _basic_. This is not going to be a full fledged test kit. I just don't have the time for this. If you want something bigger, you'll need to fork this and/or create your own. It's a very small project anyway.
+This project exists only to serve the needs of testing [Laminar](https://github.com/raquo/Laminar) and the basic needs of testing Laminar applications. Emphasis on _basic_. This is not going to be a full fledged test kit, nor are there any guarantees of documentation or stability. I just don't have the time for this. If you want something bigger, you'll need to fork this and/or create your own. It's a very small project anyway.
 
 
 ## Versioning

@@ -21,7 +21,7 @@ class TestableSvgAttrSpec extends UnitSpec {
     }
   }
 
-  test("cls: standard string attr") {
+  it("cls: standard string attr") {
     val el = dom.document.createElementNS(svgNamespaceUri, "svg")
 
     (cls nodeSvgAttrIs None) (el) shouldBe None
@@ -32,7 +32,7 @@ class TestableSvgAttrSpec extends UnitSpec {
     (cls nodeSvgAttrIs Some("class2")) (el) shouldBe Some("SVG Attr `className` value is incorrect:\n- Actual:   \"class1\"\n- Expected: \"class2\"\n")
   }
 
-  test("xlinkHref: namespaced string attr") {
+  it("xlinkHref: namespaced string attr") {
     val el = dom.document.createElementNS(svgNamespaceUri, "svg")
 
     (xlinkHref nodeSvgAttrIs None) (el) shouldBe None

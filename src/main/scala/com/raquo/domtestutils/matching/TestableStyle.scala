@@ -3,7 +3,7 @@ package com.raquo.domtestutils.matching
 import com.raquo.domtestutils.Utils.repr
 import com.raquo.domtypes.generic.keys.Style
 import org.scalajs.dom
-import org.scalajs.dom.raw.CSSStyleDeclaration
+import org.scalajs.dom.CSSStyleDeclaration
 
 import scala.scalajs.js
 import scala.scalajs.js.|
