@@ -5,7 +5,7 @@ import org.scalajs.dom
 
 /** Utilities for mounting / unmounting a single DOM node and running assertions on it.
   * This functionality can be used with DOM nodes created by any means, you don't need to use Scala DOM Builder.
-  * This trait is agnostic of the testing frameworks. We have an adapter for MUnit, see MountSpec.
+  * This trait is agnostic of the testing frameworks. We have an adapter for ScalaTest, see MountSpec.
   * Old versions used to have an adapter for ScalaTest.
   */
 trait MountOps {
