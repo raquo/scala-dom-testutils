@@ -1,9 +1,12 @@
 package com.raquo.domtestutils.scalatest
 
-import org.scalatest.Assertion
-import org.scalatest.Assertions.assertResult
+import org.scalactic.{Prettifier, source}
+import org.scalatest.matchers.should
+import org.scalatest.{Assertion, TestSuite}
 
-trait Matchers {
+trait Matchers { this: TestSuite =>
+
+  val raw: should.Matchers = new should.Matchers {}
 
   def assertEquals(
     actual: scala.Any,
@@ -20,23 +23,12 @@ trait Matchers {
     expected: scala.Any,
     clue: scala.Any
   )(
-    implicit prettifier: org.scalactic.Prettifier,
-    pos: org.scalactic.source.Position
+    implicit prettifier: Prettifier,
+    pos: source.Position
   ): Assertion = {
     assertResult(expected = expected, clue = clue)(actual = actual)
   }
 
-  // #TODO[Perf] Make this into AnyVal later, I guess
-  implicit class ShouldSyntax[A](val actual: A) {
-
-    def shouldBe(
-      expected: A
-    )(
-      implicit prettifier: org.scalactic.Prettifier,
-      pos: org.scalactic.source.Position
-    ): Assertion = {
-      assertResult(expected = expected)(actual = actual)
-    }
-  }
+  implicit def withShouldSyntax[A](value: A): ShouldSyntax[A] = new ShouldSyntax[A](value)
 
 }
