@@ -23,6 +23,7 @@ class TestableStyleSpec extends UnitSpec {
   it("background-color: string style") {
     val el = dom.document.createElement("div").asInstanceOf[dom.html.Div]
 
+    print("------")
     (backgroundColor nodeStyleIs "") (el) shouldBe None
     (backgroundColor nodeStyleIs "red") (el) shouldBe Some(
       s"""|Style `background-color` is missing:
