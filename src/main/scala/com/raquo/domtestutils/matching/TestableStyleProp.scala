@@ -1,14 +1,13 @@
 package com.raquo.domtestutils.matching
 
 import com.raquo.domtestutils.Utils.repr
-import com.raquo.domtypes.generic.keys.Style
 import org.scalajs.dom
 import org.scalajs.dom.CSSStyleDeclaration
 
 import scala.scalajs.js
 import scala.scalajs.js.|
 
-class TestableStyle[V](val style: Style[V]) extends AnyVal {
+class TestableStyleProp[V](val name: String) {
 
   def is(expectedValue: V | String): Rule = (testNode: ExpectedNode) => {
     // @TODO[Integrity] I hope this toString is ok. We don't use any fancy types for CSS anyway.
@@ -24,14 +23,14 @@ class TestableStyle[V](val style: Style[V]) extends AnyVal {
     } else {
       if (actualValue.nonEmpty) {
         Some(
-          s"""|Style `${style.name}` value is incorrect:
+          s"""|Style `${name}` value is incorrect:
               |- Actual:   ${repr(actualValue)}
               |- Expected: ${repr(expectedValue)}
               |""".stripMargin
         )
       } else {
         Some(
-          s"""|Style `${style.name}` is missing:
+          s"""|Style `${name}` is missing:
               |- Actual:   (style missing, or empty string)
               |- Expected: ${repr(expectedValue)}
               |""".stripMargin
@@ -48,7 +47,7 @@ class TestableStyle[V](val style: Style[V]) extends AnyVal {
       .selectDynamic("style")
       .asInstanceOf[js.UndefOr[CSSStyleDeclaration]]
       .flatMap { css =>
-        css.getPropertyValue(style.name)
+        css.getPropertyValue(name)
       }
       .toOption
       .getOrElse("")

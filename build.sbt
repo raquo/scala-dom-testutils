@@ -8,6 +8,7 @@ libraryDependencies ++= Seq(
 scalacOptions ++= Seq(
   "-deprecation",
   "-feature",
+  "-language:higherKinds",
   "-language:implicitConversions",
   {
     val localSourcesPath = baseDirectory.value.toURI

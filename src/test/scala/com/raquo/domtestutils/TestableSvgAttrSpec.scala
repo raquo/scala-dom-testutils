@@ -1,7 +1,7 @@
 package com.raquo.domtestutils
 
 import com.raquo.domtypes.generic.codecs.StringAsIsCodec
-import com.raquo.domtypes.generic.keys.SvgAttr
+import com.raquo.domtestutils.fixtures.SvgAttr
 import org.scalajs.dom
 
 class TestableSvgAttrSpec extends UnitSpec {
