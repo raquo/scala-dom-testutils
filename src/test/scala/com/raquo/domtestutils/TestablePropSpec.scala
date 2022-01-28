@@ -1,7 +1,7 @@
 package com.raquo.domtestutils
 
 import com.raquo.domtypes.generic.codecs.{BooleanAsIsCodec, IntAsIsCodec, IterableAsSpaceSeparatedStringCodec, StringAsIsCodec}
-import com.raquo.domtypes.generic.keys.Prop
+import com.raquo.domtestutils.fixtures.Prop
 import org.scalajs.dom
 
 import scala.scalajs.js

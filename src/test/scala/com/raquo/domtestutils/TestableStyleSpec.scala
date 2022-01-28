@@ -1,6 +1,6 @@
 package com.raquo.domtestutils
 
-import com.raquo.domtypes.generic.keys.Style
+import com.raquo.domtestutils.fixtures.StyleProp
 import org.scalajs.dom
 import org.scalajs.dom.CSSStyleDeclaration
 
@@ -8,10 +8,10 @@ import scala.scalajs.js
 
 class TestableStyleSpec extends UnitSpec {
 
-  val backgroundColor = new Style[String]("background-color")
-  val zIndex = new Style[Int]("z-index")
+  val backgroundColor = new StyleProp[String]("background-color")
+  val zIndex = new StyleProp[Int]("z-index")
 
-  def setStyle[V](el: dom.Element, style: Style[V], value: V): Unit = {
+  def setStyle[V](el: dom.Element, style: StyleProp[V], value: V): Unit = {
     el.asInstanceOf[js.Dynamic]
       .selectDynamic("style")
       .asInstanceOf[js.UndefOr[CSSStyleDeclaration]]

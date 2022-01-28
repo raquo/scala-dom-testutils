@@ -1,40 +1,24 @@
 package com.raquo.domtestutils.matching
 
-import com.raquo.domtypes.generic.builders.Tag
-import com.raquo.domtypes.generic.keys.{HtmlAttr, Prop, Style, SvgAttr}
-import com.raquo.domtypes.generic.nodes.Comment
+trait RuleImplicits[Tag, Comment, Prop[_, _], HtmlAttr[_], SvgAttr[_], Style[_]] {
 
-trait RuleImplicits {
+  implicit def makeTagTestable(tag: Tag): ExpectedNode
 
-  implicit def makeTagTestable(tag: Tag[_]): ExpectedNode = {
-    ExpectedNode.element(tag)
-  }
+  implicit def makeCommentBuilderTestable(commentBuilder: () => Comment): ExpectedNode
 
-  implicit def makeCommentBuilderTestable(commentBuilder: () => Comment): ExpectedNode = {
-    ExpectedNode.comment
-  }
+  implicit def makeAttrTestable[V](attr: HtmlAttr[V]): TestableHtmlAttr[V]
 
-  implicit def makeAttrTestable[V](attr: HtmlAttr[V]): TestableHtmlAttr[V] = {
-    new TestableHtmlAttr(attr)
-  }
+  implicit def makePropTestable[V, DomV](prop: Prop[V, DomV]): TestableProp[V, DomV]
 
-  implicit def makePropTestable[V, DomV](prop: Prop[V, DomV]): TestableProp[V, DomV] = {
-    new TestableProp(prop)
-  }
+  implicit def makeStyleTestable[V](style: Style[V]): TestableStyleProp[V]
 
-  implicit def makeStyleTestable[V](style: Style[V]): TestableStyle[V] = {
-    new TestableStyle(style)
-  }
-
-  implicit def makeSvgAttrTestable[V](svgAttr: SvgAttr[V]): TestableSvgAttr[V] = {
-    new TestableSvgAttr(svgAttr)
-  }
+  implicit def makeSvgAttrTestable[V](svgAttr: SvgAttr[V]): TestableSvgAttr[V]
 
   implicit def expectedNodeAsExpectedChildRule(expectedChild: ExpectedNode): Rule = (expectedParent: ExpectedNode) => {
     expectedParent.addExpectedChild(expectedChild)
   }
 
-  implicit def tagAsExpectedChildRule(tag: Tag[_]): Rule = (expectedParent: ExpectedNode) => {
+  implicit def tagAsExpectedChildRule(tag: Tag): Rule = (expectedParent: ExpectedNode) => {
     val expectedChild: ExpectedNode = makeTagTestable(tag)
     expectedParent.addExpectedChild(expectedChild)
   }

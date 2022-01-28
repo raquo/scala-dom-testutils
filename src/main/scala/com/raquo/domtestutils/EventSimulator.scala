@@ -32,7 +32,7 @@ trait EventSimulator {
 
   def simulateScroll(target: dom.Node): Unit = {
     val scrollOpts = new WheelEventInit {
-      override val view: js.UndefOr[dom.Window] = dom.window
+//      override val view: js.UndefOr[dom.Window] = dom.window  // #TODO scalajs-dom v2.1.0 made this impossible, what now?
     }
     scrollOpts.bubbles = true
     scrollOpts.cancelable = true
@@ -44,7 +44,7 @@ trait EventSimulator {
   /** @param eventType e.g. "click" */
   private def simulatePointerEvent(eventType: String, target: dom.Node): Unit = {
     val pointerOpts = new dom.PointerEventInit {
-      override val view: js.UndefOr[dom.Window] = dom.window
+//      override val view: js.UndefOr[dom.Window] = dom.window  // #TODO scalajs-dom v2.1.0 made this impossible, what now?
     }
     pointerOpts.bubbles = true
     pointerOpts.cancelable = true

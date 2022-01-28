@@ -1,7 +1,6 @@
 package com.raquo.domtestutils.matching
 
 import com.raquo.domtestutils.Utils.repr
-import com.raquo.domtypes.generic.builders.Tag
 import org.scalajs.dom
 
 import scala.collection.mutable
@@ -105,8 +104,6 @@ class ExpectedNode protected (
 }
 
 object ExpectedNode {
-
-  def element(tag: Tag[_]): ExpectedNode = new ExpectedNode(maybeTagName = Some(tag.name))
 
   def element(tagName: String): ExpectedNode = new ExpectedNode(maybeTagName = Some(tagName))
 

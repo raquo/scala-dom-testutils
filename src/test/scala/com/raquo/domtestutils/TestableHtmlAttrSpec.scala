@@ -1,7 +1,7 @@
 package com.raquo.domtestutils
 
+import com.raquo.domtestutils.fixtures.HtmlAttr
 import com.raquo.domtypes.generic.codecs.{BooleanAsAttrPresenceCodec, BooleanAsTrueFalseStringCodec, IntAsStringCodec, StringAsIsCodec}
-import com.raquo.domtypes.generic.keys.{HtmlAttr}
 import org.scalajs.dom
 
 class TestableHtmlAttrSpec extends UnitSpec {

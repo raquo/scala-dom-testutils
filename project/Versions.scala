@@ -4,11 +4,11 @@ object Versions {
 
   val Scala_2_13 = "2.13.6"
 
-  val Scala_3 = "3.0.2"
+  val Scala_3 = "3.1.0"
 
-  val ScalaDomTypes = "0.15.0"
+  val ScalaDomTypes = "0.16.0-RC1"
 
-  def ScalaTest: String = "3.2.10"
+  val ScalaTest = "3.2.10"
 
   val JsDom = "16.4.0"
 }
