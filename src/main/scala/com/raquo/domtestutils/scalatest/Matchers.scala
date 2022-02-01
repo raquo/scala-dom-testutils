@@ -2,9 +2,9 @@ package com.raquo.domtestutils.scalatest
 
 import org.scalactic.{Prettifier, source}
 import org.scalatest.matchers.should
-import org.scalatest.{Assertion, TestSuite}
+import org.scalatest.{Assertion, Assertions}
 
-trait Matchers { this: TestSuite =>
+trait Matchers { this: Assertions =>
 
   val raw: should.Matchers = new should.Matchers {}
 

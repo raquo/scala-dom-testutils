@@ -2,6 +2,7 @@ package com.raquo.domtestutils.scalatest
 
 import org.scalactic.{Prettifier, source}
 import org.scalatest.Assertion
+import org.scalatest.enablers.Emptiness
 import org.scalatest.matchers.should
 
 class ShouldSyntax[A](val actual: A) extends AnyVal {
@@ -17,12 +18,37 @@ class ShouldSyntax[A](val actual: A) extends AnyVal {
   }
 
   def shouldBe(
-    expected: A
+    expected: scala.Any
   )(
     implicit pos: source.Position,
     prettifier: Prettifier
   ): Assertion = {
     ShouldSyntax.shouldBe(actual, expected)(pos, prettifier)
+  }
+
+  def shouldNotBe(
+    expected: scala.Any
+  )(
+    implicit pos: source.Position,
+    prettifier: Prettifier
+  ): Assertion = {
+    ShouldSyntax.shouldNotBe(actual, expected)(pos, prettifier)
+  }
+
+  def shouldBeEmpty(
+    implicit pos: source.Position,
+    prettifier: Prettifier,
+    emptiness: Emptiness[A]
+  ): Assertion = {
+    ShouldSyntax.shouldBeEmpty(actual)(pos, prettifier, emptiness)
+  }
+
+  def shouldNotBeEmpty(
+    implicit pos: source.Position,
+    prettifier: Prettifier,
+    emptiness: Emptiness[A]
+  ): Assertion = {
+    ShouldSyntax.shouldNotBeEmpty(actual)(pos, prettifier, emptiness)
   }
 }
 
@@ -52,5 +78,35 @@ object ShouldSyntax extends should.Matchers {
     prettifier: Prettifier
   ): Assertion = {
     actual shouldBe expected
+  }
+
+  def shouldNotBe[A](
+    actual: A,
+    expected: scala.Any
+  )(
+    implicit pos: source.Position,
+    prettifier: Prettifier
+  ): Assertion = {
+    actual shouldNot be(expected)
+  }
+
+  def shouldBeEmpty[A](
+    actual: A
+  )(
+    implicit pos: source.Position,
+    prettifier: Prettifier,
+    emptiness: Emptiness[A]
+  ): Assertion = {
+    actual shouldBe empty
+  }
+
+  def shouldNotBeEmpty[A](
+    actual: A
+  )(
+    implicit pos: source.Position,
+    prettifier: Prettifier,
+    emptiness: Emptiness[A]
+  ): Assertion = {
+    actual should not be empty
   }
 }

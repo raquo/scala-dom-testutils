@@ -1,12 +1,12 @@
 object Versions {
 
-  val Scala_2_12 = "2.12.13"
+  val Scala_2_12 = "2.12.15"
 
-  val Scala_2_13 = "2.13.6"
+  val Scala_2_13 = "2.13.8"
 
   val Scala_3 = "3.1.0"
 
-  val ScalaDomTypes = "0.16.0-RC1"
+  val ScalaDomTypes = "0.16.0-RC2"
 
   val ScalaTest = "3.2.10"
 
