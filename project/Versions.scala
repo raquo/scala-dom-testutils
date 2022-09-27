@@ -4,9 +4,9 @@ object Versions {
 
   val Scala_2_13 = "2.13.8"
 
-  val Scala_3 = "3.1.0"
+  val Scala_3 = "3.2.0"
 
-  val ScalaDomTypes = "0.16.0-RC2"
+  val ScalaDomTypes = "0.16.0-RC3"
 
   val ScalaTest = "3.2.10"
 
