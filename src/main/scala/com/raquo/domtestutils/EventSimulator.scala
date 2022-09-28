@@ -1,9 +1,6 @@
 package com.raquo.domtestutils
 
 import org.scalajs.dom
-import org.scalajs.dom.WheelEventInit
-
-import scala.scalajs.js
 
 trait EventSimulator {
 
@@ -31,9 +28,8 @@ trait EventSimulator {
   }
 
   def simulateScroll(target: dom.Node): Unit = {
-    val scrollOpts = new WheelEventInit {
-      override val view: js.UndefOr[dom.Window] = dom.window
-    }
+    val scrollOpts = new dom.WheelEventInit {}
+    scrollOpts.view = dom.window
     scrollOpts.bubbles = true
     scrollOpts.cancelable = true
     scrollOpts.composed = false
@@ -43,9 +39,8 @@ trait EventSimulator {
 
   /** @param eventType e.g. "click" */
   private def simulatePointerEvent(eventType: String, target: dom.Node): Unit = {
-    val pointerOpts = new dom.PointerEventInit {
-      override val view: js.UndefOr[dom.Window] = dom.window
-    }
+    val pointerOpts = new dom.PointerEventInit {}
+    pointerOpts.view = dom.window
     pointerOpts.bubbles = true
     pointerOpts.cancelable = true
     pointerOpts.composed = false

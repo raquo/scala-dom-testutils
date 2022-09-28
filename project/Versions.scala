@@ -6,7 +6,9 @@ object Versions {
 
   val Scala_3 = "3.2.0"
 
-  val ScalaDomTypes = "0.15.2"
+  val ScalaDomTypes = "0.15.3"
+
+  // Only used in test:
 
   def ScalaTest: String = "3.2.10"
 
