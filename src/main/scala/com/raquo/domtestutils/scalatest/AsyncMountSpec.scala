@@ -1,6 +1,7 @@
 package com.raquo.domtestutils.scalatest
 
 import com.raquo.domtestutils.MountOps
+import org.scalactic
 import org.scalatest.{AsyncTestSuite, FutureOutcome}
 
 import scala.concurrent.ExecutionContext
@@ -12,12 +13,12 @@ trait AsyncMountSpec
 
   implicit override def executionContext: ExecutionContext = JSExecutionContext.queue
 
-  override def doAssert(condition: Boolean, message: String): Unit = {
-    assert(condition, message)
+  override def doAssert(condition: Boolean, message: String)(implicit pos: scalactic.source.Position): Unit = {
+    assert(condition, message) //(implicitly[scalactic.Prettifier], pos)
   }
 
-  override def doFail(message: String): Nothing = {
-    fail(message)
+  override def doFail(message: String)(implicit pos: scalactic.source.Position): Nothing = {
+    fail(message) //(pos)
   }
 
   /** Note: we use withFixture instead of beforeEach/afterEach because

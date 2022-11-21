@@ -1,18 +1,19 @@
 package com.raquo.domtestutils.scalatest
 
 import com.raquo.domtestutils.MountOps
+import org.scalactic
 import org.scalatest.{Outcome, TestSuite}
 
 trait MountSpec
   extends TestSuite
   with MountOps {
 
-  override def doAssert(condition: Boolean, message: String): Unit = {
-    assert(condition, message)
+  override def doAssert(condition: Boolean, message: String)(implicit pos: scalactic.source.Position): Unit = {
+    assert(condition, message) //(implicitly[scalactic.Prettifier], pos)
   }
 
-  override def doFail(message: String): Nothing = {
-    fail(message)
+  override def doFail(message: String)(implicit pos: scalactic.source.Position): Nothing = {
+    fail(message) //(pos)
   }
 
   /** Note: we use withFixture instead of beforeEach/afterEach because
