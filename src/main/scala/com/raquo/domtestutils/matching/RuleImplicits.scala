@@ -14,6 +14,8 @@ trait RuleImplicits[Tag, Comment, Prop[_, _], HtmlAttr[_], SvgAttr[_], Style[_]]
 
   implicit def makeSvgAttrTestable[V](svgAttr: SvgAttr[V]): TestableSvgAttr[V]
 
+  // Converters
+
   implicit def expectedNodeAsExpectedChildRule(expectedChild: ExpectedNode): Rule = (expectedParent: ExpectedNode) => {
     expectedParent.addExpectedChild(expectedChild)
   }
@@ -37,4 +39,23 @@ trait RuleImplicits[Tag, Comment, Prop[_, _], HtmlAttr[_], SvgAttr[_], Style[_]]
       expectedParent.addExpectedChild(expectedTextChild)
     }
   }
+
+  // Option-based converters
+
+  implicit def maybeExpectedNodeAsExpectedChildRule(maybeExpectedChild: Option[ExpectedNode]): Rule = (expectedParent: ExpectedNode) => {
+    maybeExpectedChild.foreach(expectedParent.addExpectedChild)
+  }
+
+  implicit def maybeTagAsExpectedChildRule(maybeTag: Option[Tag]): Rule = (expectedParent: ExpectedNode) => {
+    maybeTag.foreach(tagAsExpectedChildRule(_).applyTo(expectedParent))
+  }
+
+  implicit def maybeCommentBuilderAsExpectedChildRule(maybeCommentBuilder: Option[() => Comment]): Rule = (expectedParent: ExpectedNode) => {
+    maybeCommentBuilder.foreach(commentBuilderAsExpectedChildRule(_).applyTo(expectedParent))
+  }
+
+  implicit def maybeStringAsExpectedTextRule(maybeChildText: Option[String]): Rule = (expectedParent: ExpectedNode) => {
+    maybeChildText.foreach(stringAsExpectedTextRule(_).applyTo(expectedParent))
+  }
+
 }
