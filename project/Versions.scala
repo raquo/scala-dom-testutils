@@ -10,5 +10,12 @@ object Versions {
 
   val ScalaTest = "3.2.10"
 
-  val JsDom = "16.4.0"
+  val JsDom = "20.0.2"
+
+  val miniTest = "2.9.6"
+
+  val uTest = "0.8.1"
+
+  val AirFrame = "21.12.1"
+
 }

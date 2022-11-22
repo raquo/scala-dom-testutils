@@ -2,8 +2,19 @@ enablePlugins(ScalaJSBundlerPlugin)
 
 libraryDependencies ++= Seq(
   "com.raquo" %%% "domtypes" % Versions.ScalaDomTypes,
-  "org.scalatest" %%% "scalatest" % Versions.ScalaTest
 )
+
+libraryDependencies ++= Seq(
+  "org.scalatest" %%% "scalatest" % Versions.ScalaTest,
+
+  "com.lihaoyi" %%% "utest" % Versions.uTest,
+
+  "io.monix" %%% "minitest" % Versions.miniTest,
+
+  "org.wvlet.airframe" %%% "airframe-log" % Versions.AirFrame,
+  "org.wvlet.airframe" %%% "airspec" % Versions.AirFrame,
+  "org.scala-js" %%% "scalajs-java-securerandom" % "1.0.0",
+).flatMap(dep => Seq(dep % Optional,  dep % Test))
 
 scalacOptions ++= Seq(
   "-deprecation",
@@ -18,6 +29,14 @@ scalacOptions ++= Seq(
     s"${sourcesOptionName}:$localSourcesPath->$remoteSourcesPath"
   }
 )
+
+// TODO: consider commenting out test frameworks or better moving test suites to separate subprojects,
+//       as mix of outputs from multiple different test frameworks looks ugly
+testFrameworks ++= Seq(
+  "wvlet.airspec.Framework",
+  "utest.runner.Framework",
+  "minitest.runner.Framework",
+).map(new TestFramework(_))
 
 (Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) })
 
