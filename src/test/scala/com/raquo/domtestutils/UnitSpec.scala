@@ -3,9 +3,13 @@ package com.raquo.domtestutils
 import com.raquo.domtestutils.fixtures.{Comment, HtmlAttr, Prop, StyleProp, SvgAttr, Tag}
 import com.raquo.domtestutils.matching.{ExpectedNode, RuleImplicits, TestableHtmlAttr, TestableProp, TestableStyleProp, TestableSvgAttr}
 import com.raquo.domtestutils.scalatest.Matchers
-import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.Suite
+import org.scalatest.funspec.AnyFunSpecLike
 
-class UnitSpec extends AnyFunSpec with Matchers with RuleImplicits[Tag[Any], Comment, Prop, HtmlAttr, SvgAttr, StyleProp] {
+trait UnitSpec extends UnitSuiteLike with AnyFunSpecLike
+trait UnitSuiteLike extends Suite with Matchers with BaseUnitSuiteLike
+
+trait BaseUnitSuiteLike extends RuleImplicits[Tag[Any], Comment, Prop, HtmlAttr, SvgAttr, StyleProp] {
 
   override implicit def makeTagTestable(tag: Tag[Any]): ExpectedNode = {
     ExpectedNode.element(tag.name)
