@@ -10,7 +10,7 @@ import scala.scalajs.js
 
 class TestableProp[V, DomV](
   val name: String,
-  val codec: Codec[V, DomV]
+  val decode: DomV => V
 ) {
 
   def is(expectedValue: V): Rule = (testNode: ExpectedNode) => {
@@ -65,7 +65,7 @@ class TestableProp[V, DomV](
       case str: String if str.length == 0 => None
       case `jsUndef` => None
       case null => None
-      case _ => Some(codec.decode(propValue.asInstanceOf[DomV]))
+      case _ => Some(decode(propValue.asInstanceOf[DomV]))
     }
   }
 }

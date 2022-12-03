@@ -1,12 +1,12 @@
 package com.raquo.domtestutils.matching
 
 import com.raquo.domtestutils.Utils.repr
-import com.raquo.domtypes.generic.codecs.Codec
 import org.scalajs.dom
 
 class TestableHtmlAttr[V](
   val name: String,
-  val codec: Codec[V, String]
+  val encode: V => String,
+  val decode: String => V
 ) {
 
   def is(expectedValue: V): Rule = (testNode: ExpectedNode) => {
@@ -35,7 +35,7 @@ class TestableHtmlAttr[V](
             }
 
           case (None, Some(expectedValue)) =>
-            if (codec.encode(expectedValue) == null) {
+            if (encode(expectedValue) == null) {
               None // Note: `encode` returning `null` is exactly how missing attribute values are defined, e.g. in BooleanAsAttrPresenceCodec
             } else {
               Some(s"""|Attr `${name}` is missing:
@@ -62,7 +62,7 @@ class TestableHtmlAttr[V](
   private[domtestutils] def getAttr(element: dom.html.Element): Option[V] = {
     // Note: for boolean-as-presence attributes, this returns `None` instead of `Some(false)` when the attribute is missing.
     if (element.hasAttribute(name)) {
-      Some(codec.decode(element.getAttribute(name)))
+      Some(decode(element.getAttribute(name)))
     } else {
       None
     }

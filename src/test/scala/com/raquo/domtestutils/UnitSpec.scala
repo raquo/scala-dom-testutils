@@ -16,11 +16,11 @@ class UnitSpec extends AnyFunSpec with Matchers with RuleImplicits[Tag[Any], Com
   }
 
   override implicit def makeAttrTestable[V](attr: HtmlAttr[V]): TestableHtmlAttr[V] = {
-    new TestableHtmlAttr[V](attr.name, attr.codec)
+    new TestableHtmlAttr[V](attr.name, attr.codec.encode, attr.codec.decode)
   }
 
   override implicit def makePropTestable[V, DomV](prop: Prop[V, DomV]): TestableProp[V, DomV] = {
-    new TestableProp[V, DomV](prop.name, prop.codec)
+    new TestableProp[V, DomV](prop.name, prop.codec.decode)
   }
 
   override implicit def makeStyleTestable[V](style: StyleProp[V]): TestableStyleProp[V] = {
@@ -28,7 +28,7 @@ class UnitSpec extends AnyFunSpec with Matchers with RuleImplicits[Tag[Any], Com
   }
 
   override implicit def makeSvgAttrTestable[V](svgAttr: SvgAttr[V]): TestableSvgAttr[V] = {
-    new TestableSvgAttr[V](svgAttr.name, svgAttr.codec, svgAttr.namespace)
+    new TestableSvgAttr[V](svgAttr.name, svgAttr.codec.encode, svgAttr.codec.decode, svgAttr.namespace)
   }
 }
 

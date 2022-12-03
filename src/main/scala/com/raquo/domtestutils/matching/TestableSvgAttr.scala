@@ -1,12 +1,12 @@
 package com.raquo.domtestutils.matching
 
 import com.raquo.domtestutils.Utils.repr
-import com.raquo.domtypes.generic.codecs.Codec
 import org.scalajs.dom
 
 class TestableSvgAttr[V](
   val name: String,
-  val codec: Codec[V, String],
+  val encode: V => String,
+  val decode: String => V,
   val namespace: Option[String]
 ) {
 
@@ -36,7 +36,7 @@ class TestableSvgAttr[V](
             }
 
           case (None, Some(expectedValue)) =>
-            if (codec.encode(expectedValue) == null) {
+            if (encode(expectedValue) == null) {
               None // Note: `encode` returning `null` is exactly how missing attribute values are defined, e.g. in BooleanAsAttrPresenceCodec
             } else {
               Some(s"""|SVG Attr `${name}` is missing:
@@ -63,7 +63,7 @@ class TestableSvgAttr[V](
   private[domtestutils] def getSvgAttr(element: dom.Element): Option[V] = {
     // Note: for boolean-as-presence attributes, this returns `None` instead of `Some(false)` when the attribute is missing.
     if (element.hasAttributeNS(namespaceURI = namespace.orNull, localName = localName)) {
-      Some(codec.decode(element.getAttributeNS(namespaceURI = namespace.orNull, localName = localName)))
+      Some(decode(element.getAttributeNS(namespaceURI = namespace.orNull, localName = localName)))
     } else {
       None
     }
