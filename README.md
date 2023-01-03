@@ -1,15 +1,25 @@
 # Scala DOM Test Utils
-![Maven Central](https://img.shields.io/maven-central/v/com.raquo/domtestutils_sjs1_3.svg)
+[![Build status](https://github.com/raquo/domtestutils/actions/workflows/test.yml/badge.svg)](https://github.com/raquo/domtestutils/actions/workflows/test.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.raquo/domtestutils_sjs1_3.svg)](https://search.maven.org/artifact/com.raquo/domtestutils_sjs1_3)
 
 
 _Scala DOM Test Utils_ provides a convenient, type-safe way to assert that a real Javascript DOM node matches a certain description using an extensible DSL.
 
-    "com.raquo" %%% "domtestutils" % "<version>"  // Scala.js 1.7.1+ only
+    "com.raquo" %%% "domtestutils" % "<version>"  // Scala.js 1.9.0+ only
 
 The types of DOM tags, attributes, properties and styles are provided by [Scala DOM Types](https://github.com/raquo/scala-dom-types), but you don't need to be using that library in your application code, _Scala DOM TestUtils_ can test any DOM node no matter how it was created. 
 
 You can use _Scala DOM Test Utils_ either directly to make assertions, or you if you're writing a DOM construction / manipulation library, to power its own test utils package. 
 
+
+
+## Project Status
+
+This project exists only to serve the needs of testing [Laminar](https://github.com/raquo/Laminar) and the basic needs of testing Laminar applications. Emphasis on _basic_. This is not going to be a full fledged test kit, nor are there any guarantees of documentation or stability. If you want a something more, you'll need to fork this and/or create your own. It's a very small project anyway.
+
+**I am very unlikely to accept PRs on this project** – please talk to me before spending your time.
+
+Note that this project currently uses an old version of _Scala DOM Types_ – I haven't had the time to migrate to the generator-based 17.x yet. It doesn't really matter as the new _Scala DOM Types_ is a compile-time dependency.
 
 
 ## Example Test
@@ -75,11 +85,6 @@ For an example of the above, see [LaminarSpec](https://github.com/raquo/Laminar/
 
 If all this is more hassle than it's worth for your use case, just forgo `MountOps` and drop down to calling `ExpectedNode.checkNode(actualNode)` to get a list of errors, and build your own test util around it.  
 
-
-
-## Project Status
-
-This project exists only to serve the needs of testing [Laminar](https://github.com/raquo/Laminar) and the basic needs of testing Laminar applications. Emphasis on _basic_. This is not going to be a full fledged test kit, nor are there any guarantees of documentation or stability. I just don't have the time for this. If you want something bigger, you'll need to fork this and/or create your own. It's a very small project anyway.
 
 
 ## Versioning

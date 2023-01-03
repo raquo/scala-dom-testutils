@@ -6,9 +6,17 @@ object Versions {
 
   val Scala_3 = "3.2.0"
 
+  // -- Dependencies --
+
   val ScalaDomTypes = "0.16.0-RC3"
+
+  // -- Test --
 
   val ScalaTest = "3.2.10"
 
-  val JsDom = "16.4.0"
+  val JsDom = "20.0.3"
+
+  val Webpack = "5.75.0"
+
+  val WebpackDevServer = "4.11.1"
 }

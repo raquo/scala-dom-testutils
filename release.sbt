@@ -4,10 +4,6 @@ normalizedName := "domtestutils"
 
 organization := "com.raquo"
 
-scalaVersion := Versions.Scala_2_13
-
-crossScalaVersions := Seq(Versions.Scala_3, Versions.Scala_2_13, Versions.Scala_2_12)
-
 homepage := Some(url("https://github.com/raquo/scala-dom-testutils"))
 
 licenses += ("MIT", url("https://github.com/raquo/scala-dom-testutils/blob/master/LICENSE.md"))
@@ -28,34 +24,6 @@ developers := List(
   )
 )
 
-releaseProcess := {
-  import ReleaseTransformations._
-  Seq[ReleaseStep](
-    checkSnapshotDependencies,
-    inquireVersions,
-    runClean,
-    runTest,
-    setReleaseVersion,
-    commitReleaseVersion,
-    tagRelease,
-    releaseStepCommandAndRemaining("+publishSigned"),
-    releaseStepCommand("sonatypeBundleRelease"),
-    setNextVersion,
-    commitNextVersion,
-    pushChanges
-  )
-}
-
-sonatypeProfileName := "com.raquo"
-
-publishTo := sonatypePublishToBundle.value
-
-publishMavenStyle := true
-
 (Test / publishArtifact) := false
 
-releaseCrossBuild := true
-
 pomIncludeRepository := { _ => false }
-
-releasePublishArtifactsAction := PgpKeys.publishSigned.value

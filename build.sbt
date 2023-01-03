@@ -1,4 +1,11 @@
+// Lets me depend on Maven Central artifacts immediately without waiting
+resolvers ++= Resolver.sonatypeOssRepos("public")
+
 enablePlugins(ScalaJSBundlerPlugin)
+
+scalaVersion := Versions.Scala_2_13
+
+crossScalaVersions := Seq(Versions.Scala_3, Versions.Scala_2_13, Versions.Scala_2_12)
 
 libraryDependencies ++= Seq(
   "com.raquo" %%% "domtypes" % Versions.ScalaDomTypes,
@@ -22,6 +29,10 @@ scalacOptions ++= Seq(
 (Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) })
 
 (Test / requireJsDomEnv) := true
+
+(webpack / version) := Versions.Webpack
+
+(startWebpackDevServer / version) := Versions.WebpackDevServer
 
 (installJsdom / version) := Versions.JsDom
 
