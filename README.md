@@ -1,5 +1,5 @@
 # Scala DOM Test Utils
-[![Build status](https://github.com/raquo/domtestutils/actions/workflows/test.yml/badge.svg)](https://github.com/raquo/domtestutils/actions/workflows/test.yml)
+[![Build status](https://github.com/raquo/scala-dom-testutils/actions/workflows/test.yml/badge.svg)](https://github.com/raquo/scala-dom-testutils/actions/workflows/test.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.raquo/domtestutils_sjs1_3.svg)](https://search.maven.org/artifact/com.raquo/domtestutils_sjs1_3)
 
 
