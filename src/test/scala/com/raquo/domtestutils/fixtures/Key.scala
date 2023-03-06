@@ -1,6 +1,6 @@
 package com.raquo.domtestutils.fixtures
 
-import com.raquo.domtypes.generic.codecs.Codec
+import com.raquo.domtestutils.codecs.Codec
 
 trait Key { val name: String }
 

@@ -5,11 +5,9 @@
 
 _Scala DOM Test Utils_ provides a convenient, type-safe way to assert that a real Javascript DOM node matches a certain description using an extensible DSL.
 
-    "com.raquo" %%% "domtestutils" % "<version>"  // Scala.js 1.9.0+ only
+    "com.raquo" %%% "domtestutils" % "<version>"  // Scala.js 1.13.0+ only
 
-The types of DOM tags, attributes, properties and styles are provided by [Scala DOM Types](https://github.com/raquo/scala-dom-types), but you don't need to be using that library in your application code, _Scala DOM TestUtils_ can test any DOM node no matter how it was created. 
-
-You can use _Scala DOM Test Utils_ either directly to make assertions, or you if you're writing a DOM construction / manipulation library, to power its own test utils package. 
+You can use _Scala DOM Test Utils_ either directly to make assertions, or you if you're writing a DOM construction / manipulation library, to power its own test utils package.
 
 
 
@@ -19,14 +17,14 @@ This project exists only to serve the needs of testing [Laminar](https://github.
 
 **I am very unlikely to accept PRs on this project** – please talk to me before spending your time.
 
-Note that this project currently uses an old version of _Scala DOM Types_ – I haven't had the time to migrate to the generator-based 17.x yet. It doesn't really matter as the new _Scala DOM Types_ is a compile-time dependency.
 
 
 ## Example Test
 
 ```scala
+import com.raquo.laminar.api.L._
 
-// Create a JS DOM node that you want to test (example shows optional Scala DOM Builder syntax)
+// Create a JS DOM node that you want to test (example shows optional Laminar syntax)
 val jsDomNode: org.scalajs.dom.Node = div(
   rel := "yolo"
   span("Hello, "),
@@ -56,9 +54,9 @@ expectNode(
 )
 ```
 
-The above example defines `val jsDomNode` using [Scala DOM Builder](https://github.com/raquo/scala-dom-builder) which is a separate project, completely optional. It is a minimal, unopinionated library for building and manipulating Javascript DOM trees. You are free to create the DOM nodes that you want to test in any other way.
+The above example gets `div`, `rel`, `href`, etc. from Laminar, and uses implicit conversions from these Laminar values to DOM TestUtils classes like `ExpectedNode` and `TestableHtmlAttr`.See more usage examples and glue code in [Laminar tests](https://github.com/raquo/Laminar/tree/master/src/test/scala/com/raquo/laminar)
 
-See more usage examples in [Laminar tests](https://github.com/raquo/Laminar/tree/master/src/test/scala/com/raquo/laminar)
+Laminar is not required to use Scala DOM TestUtils. You can integrate similarly with any other Scala.js UI library.
 
 
 
@@ -70,20 +68,15 @@ Alternative is to call `expectNode(actualNode, expectedNode)`, for example if yo
 
 If the mechanics of `MountOps` do not work for you, you can bypass `MountOps` altogether and just call `ExpectedNode.checkNode(actualNode)` directly to get a list of errors.
 
-**With ScalaTest**: Your test suite should extend the `MountSpec` trait. Use `mount` and `expectNode` methods in your test code. You can call `unmount` and then `mount` again within one test if you want to test multiple unrelated nodes (e.g. different variations in a loop).
+**With ScalaTest**: Your test suite should extend the `MountSpec` trait. Use `mount` and `expectNode` methods in your test code. You can call `unmount` and then `mount` again within one test if you want to test multiple unrelated nodes (e.g. different variations in a loop). See Laminar's test suite for an example.
 
-**Without ScalaTest**: Write a tiny adapter like `MountSpec` for your test framework, which would:
+**Without ScalaTest**: You could write a tiny adapter like `MountSpec` for your test framework, which would:
  
 - Extend `MountOps` and provide `doAssert` / `doFail` implementations specific to your test framework
 - Call `resetDOM` in the beginning of each test, and `clearDOM` at the end of each test.
-
-Pull requests for such adapters for popular test frameworks are welcome.
-
-**To power your library's test utils**: If you are building or using a DOM construction / manipulation library like e.g. React, you might want to override the `mount` / `unmount` methods to give your library the chance to do proper setup and cleanup. Instead of calling super methods for these, you can make use of `assertEmptyContainer` / `assertRootNodeMounted` / `mountedElementClue` the same way they are used in the default implementations in `MountOps`.
-
-For an example of the above, see [LaminarSpec](https://github.com/raquo/Laminar/blob/master/src/test/scala/com/raquo/laminar/utils/LaminarSpec.scala), which defines custom mounting / unmounting logic for [Laminar](https://github.com/raquo/Laminar)'s reactive nodes.
-
-If all this is more hassle than it's worth for your use case, just forgo `MountOps` and drop down to calling `ExpectedNode.checkNode(actualNode)` to get a list of errors, and build your own test util around it.  
+- However, this project depends on ScalaTest, currently just for the `source.Position` macro, but in the future the integration could be deepened.
+- So, long term, you might be better off forking this project if you want to use a different testing library.
+- You could probably also forgo `MountOps` and other such files and drop down to calling `ExpectedNode.checkNode(actualNode)` to get a list of errors, and build your own test util around it.
 
 
 
@@ -92,11 +85,11 @@ If all this is more hassle than it's worth for your use case, just forgo `MountO
 There is no promise of any backwards compatibility in this particular project. I _roughly_ align versions with Scala DOM Types for my own convenience.
 
 
+
 ## My Related Projects
 
-- [Scala DOM Types](https://github.com/raquo/scala-dom-types) – Type definitions that we use for all the HTML tags, attributes, properties, and styles
 - [Laminar](https://github.com/raquo/Laminar) – Reactive UI library based on _Scala DOM Types_
-- [Scala DOM Builder](https://github.com/raquo/scala-dom-builder) – Low-level library for building and manipulating DOM trees
+- [Scala DOM Types](https://github.com/raquo/scala-dom-types) – Type definitions for all the HTML tags, attributes, properties, and styles, used by Laminar and a few other similar libraries
 
 
 

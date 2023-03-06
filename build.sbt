@@ -1,5 +1,18 @@
+import VersionHelper.{versionFmt, fallbackVersion}
+
 // Lets me depend on Maven Central artifacts immediately without waiting
 resolvers ++= Resolver.sonatypeOssRepos("public")
+
+// Makes sure to increment the version for local development
+ThisBuild / version := dynverGitDescribeOutput.value
+  .mkVersion(out => versionFmt(out, dynverSonatypeSnapshots.value), fallbackVersion(dynverCurrentDate.value))
+
+ThisBuild / dynver := {
+  val d = new java.util.Date
+  sbtdynver.DynVer
+    .getGitDescribeOutput(d)
+    .mkVersion(out => versionFmt(out, dynverSonatypeSnapshots.value), fallbackVersion(d))
+}
 
 enablePlugins(ScalaJSBundlerPlugin)
 
@@ -8,7 +21,7 @@ scalaVersion := Versions.Scala_2_13
 crossScalaVersions := Seq(Versions.Scala_3, Versions.Scala_2_13, Versions.Scala_2_12)
 
 libraryDependencies ++= Seq(
-  "com.raquo" %%% "domtypes" % Versions.ScalaDomTypes,
+  "org.scala-js" %%% "scalajs-dom" % Versions.ScalaJsDom,
   "org.scalatest" %%% "scalatest" % Versions.ScalaTest
 )
 

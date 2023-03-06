@@ -8,7 +8,7 @@ object Versions {
 
   // -- Dependencies --
 
-  val ScalaDomTypes = "0.16.0-RC3"
+  val ScalaJsDom = "2.3.0"
 
   // -- Test --
 
