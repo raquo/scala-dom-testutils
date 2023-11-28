@@ -15,18 +15,18 @@ class ExpectedNode protected (
 
   // @TODO[Integrity] Write tests for this test util; it's quite complicated.
 
-  private val checksBuffer: mutable.Buffer[Check] = mutable.Buffer(
-    checkNodeType
-  )
-
-  private val expectedChildrenBuffer: mutable.Buffer[ExpectedNode] = mutable.Buffer()
-
   val nodeType: String = (maybeTagName, isTextNode, isComment) match {
     case (Some(tagName), false, false) => s"Element[$tagName]"
     case (None, true, false) => "Text"
     case (None, false, true) => "Comment"
     case _ => "[ExpectedNode.nodeType: InvalidNode]"
   }
+
+  private val expectedChildrenBuffer: mutable.Buffer[ExpectedNode] = mutable.Buffer()
+
+  private val checksBuffer: mutable.Buffer[Check] = mutable.Buffer(
+    ExpectedNode.checkNodeType(nodeType)
+  )
 
   def checks: List[Check] = checksBuffer.toList
 
@@ -47,19 +47,6 @@ class ExpectedNode protected (
 
   def like(rules: Rule*): ExpectedNode = {
     of(rules: _*)
-  }
-
-  def checkNodeType(actualNode: dom.Node): MaybeError = {
-    val actualNodeType = actualNode match {
-      case el: dom.Element => s"Element[${el.tagName.toLowerCase}]"
-      case t: dom.Text => "Text"
-      case c: dom.Comment => "Comment"
-    }
-    if (actualNodeType == nodeType) {
-      None
-    } else {
-      Some(s"Node type mismatch: actual node is a ${repr(actualNodeType)}, expected a ${repr(nodeType)}")
-    }
   }
 
   def checkNode(node: dom.Node, clue: String): ErrorList = {
@@ -85,7 +72,7 @@ class ExpectedNode protected (
       }
     }
 
-    errorsFromThisNode ++ childErrors
+    errorsFromThisNode.distinct ++ childErrors
   }
 
   // @TODO[Convenience] The checks that we apply could also report what they're doing here
@@ -115,26 +102,40 @@ object ExpectedNode {
     s"[$clue]: $message"
   }
 
-  def checkText(expectedText: String)(node: dom.Node): MaybeError = {
-    if (node.nodeType != dom.Node.TEXT_NODE) {
-      Some(s"Node type mismatch: actual ${repr(node.nodeType)}, expected ${repr(dom.Node.TEXT_NODE)} (Text Node)")
-    } else if (node.textContent != expectedText) {
-      Some(s"Text node textContent mismatch: actual ${repr(node.textContent)}, expected ${repr(expectedText)}")
-    } else {
+  def nodeType(node: dom.Node): String = {
+    node match {
+      case el: dom.Element => s"Element[${el.tagName.toLowerCase}]"
+      case t: dom.Text => "Text"
+      case c: dom.Comment => "Comment"
+    }
+  }
+
+  def checkNodeType(expectedNodeType: String)(node: dom.Node): MaybeError = {
+    val actualNodeType = nodeType(node)
+    if (actualNodeType == expectedNodeType) {
       None
+    } else {
+      Some(s"Node type mismatch: actual node is a ${repr(actualNodeType)}, expected a ${repr(expectedNodeType)}")
+    }
+  }
+
+  def checkText(expectedText: String)(node: dom.Node): MaybeError = {
+    checkNodeType("Text")(node).orElse {
+      if (node.textContent != expectedText) {
+        Some(s"Text node textContent mismatch: actual ${repr(node.textContent)}, expected ${repr(expectedText)}")
+      } else {
+        None
+      }
     }
   }
 
   def checkCommentText(expectedText: String)(node: dom.Node): MaybeError = {
-    node match {
-      case comment: dom.Comment =>
-        if (comment.textContent == expectedText) {
-          None
-        } else {
-          Some(s"Comment node text mismatch: actual ${repr(comment.textContent)}, expected ${repr(expectedText)}")
-        }
-      case _ =>
-        Some(s"Node type mismatch [checkCommentText]: actual node ${repr(node)}, expected an instance of dom.Comment")
+    checkNodeType("Comment")(node).orElse {
+      if (node.textContent != expectedText) {
+        Some(s"Comment node text mismatch: actual ${repr(node.textContent)}, expected ${repr(expectedText)}")
+      } else {
+        None
+      }
     }
   }
 
