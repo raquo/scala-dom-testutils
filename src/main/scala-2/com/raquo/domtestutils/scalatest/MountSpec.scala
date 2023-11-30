@@ -8,12 +8,15 @@ trait MountSpec
   extends TestSuite
   with MountOps {
 
-  override def doAssert(condition: Boolean, message: String)(implicit pos: scalactic.source.Position): Unit = {
-    assert(condition, message) //(implicitly[scalactic.Prettifier], pos)
+  override def doAssert(condition: Boolean, message: String)(
+    implicit prettifier: scalactic.Prettifier,
+    pos: scalactic.source.Position
+  ): Unit = {
+    assert(condition, message)(prettifier, pos)
   }
 
   override def doFail(message: String)(implicit pos: scalactic.source.Position): Nothing = {
-    fail(message) //(pos)
+    fail(message)(pos)
   }
 
   /** Note: we use withFixture instead of beforeEach/afterEach because
@@ -27,6 +30,5 @@ trait MountSpec
       clearDOM("withFixture-end") // Runs at the end of each test, regardless of the result
     }
   }
-
 
 }

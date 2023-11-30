@@ -32,7 +32,13 @@ trait MountOps {
   /** If condition is false, fail the test with a given message
     * This method exists for compatibility with different test frameworks.
     */
-  def doAssert(condition: Boolean, message: String)(implicit pos: scalactic.source.Position): Unit
+  def doAssert(
+    condition: Boolean,
+    message: String
+  )(
+    implicit prettifier: scalactic.Prettifier,
+    pos: scalactic.source.Position,
+  ): Unit
 
   /** Fail the test with a given message
     * This method exists for compatibility with different test frameworks.
@@ -71,8 +77,13 @@ trait MountOps {
     * because that prevents users from defining their own `mount` methods that accept default arguments
     * ("multiple overloaded alternatives of method mount define default arguments") error
     */
-  def mount(node: dom.Node)(implicit pos: scalactic.source.Position): Unit = {
-    mount(node, defaultMountedElementClue)(pos)
+  def mount(
+    node: dom.Node
+  )(
+    implicit prettifier: scalactic.Prettifier,
+    pos: scalactic.source.Position
+  ): Unit = {
+    mount(node, defaultMountedElementClue)(prettifier, pos)
   }
 
   /** Inject the root node into the DOM */
@@ -80,9 +91,10 @@ trait MountOps {
     node: dom.Node,
     clue: String
   )(
-    implicit pos: scalactic.source.Position
+    implicit prettifier: scalactic.Prettifier,
+    pos: scalactic.source.Position
   ): Unit = {
-    assertEmptyContainer("mount")(pos)
+    assertEmptyContainer("mount")(prettifier, pos)
     mountedElementClue = clue
     containerNode.appendChild(node)
   }
@@ -92,30 +104,46 @@ trait MountOps {
     clue: String,
     node: dom.Node
   )(
-    implicit pos: scalactic.source.Position
+    implicit prettifier: scalactic.Prettifier,
+    pos: scalactic.source.Position
   ): Unit = {
-    mount(node, clue)(pos)
+    mount(node, clue)(prettifier, pos)
   }
 
   /** Remove root node from the DOM */
-  def unmount(clue: String = "unmount")(implicit pos: scalactic.source.Position): Unit = {
-    assertRootNodeMounted("unmount:" + clue)(pos)
+  def unmount(
+    clue: String = "unmount"
+  )(
+    implicit prettifier: scalactic.Prettifier,
+    pos: scalactic.source.Position
+  ): Unit = {
+    assertRootNodeMounted("unmount:" + clue)(prettifier, pos)
     rootNode.parentNode.removeChild(rootNode)
     mountedElementClue = defaultMountedElementClue
   }
 
   /** Remove all traces of previous tests from the DOM: Unmount the root node and remove the container from the DOM */
-  def clearDOM(clue: String = "clearDOM")(implicit pos: scalactic.source.Position): Unit = {
+  def clearDOM(
+    clue: String = "clearDOM"
+  )(
+    implicit prettifier: scalactic.Prettifier,
+    pos: scalactic.source.Position
+  ): Unit = {
     if (rootNode != null) {
-      unmount("clearDOM:" + clue)(pos)
+      unmount("clearDOM:" + clue)(prettifier, pos)
     }
     containerNode = null
     dom.document.body.textContent = "" // remove the container
   }
 
   /** Clear the DOM and create a new container. This should be called before each test. */
-  def resetDOM(clue: String = "resetDOM")(implicit pos: scalactic.source.Position): Unit = {
-    clearDOM("resetDOM:" + clue)(pos)
+  def resetDOM(
+    clue: String = "resetDOM"
+  )(
+    implicit prettifier: scalactic.Prettifier,
+    pos: scalactic.source.Position
+  ): Unit = {
+    clearDOM("resetDOM:" + clue)(prettifier, pos)
     val newContainer = createContainer()
     dom.document.body.appendChild(newContainer)
     containerNode = newContainer
@@ -127,7 +155,7 @@ trait MountOps {
     container
   }
 
-  def assertEmptyContainer(clue: String)(implicit pos: scalactic.source.Position): Unit = {
+  def assertEmptyContainer(clue: String)(implicit prettifier: scalactic.Prettifier, pos: scalactic.source.Position): Unit = {
     containerNode match {
       case null =>
         doFail(s"ASSERT FAIL [$clue]: Container not found. Usually, resetDOM() creates the container in withFixture().")(pos)
@@ -135,22 +163,22 @@ trait MountOps {
         doAssert(
           containerNode.parentNode == dom.document.body,
           s"ASSERT FAIL [$clue]: Container is not mounted to <body> (what did you do!?)."
-        )(pos)
+        )(prettifier, pos)
         doAssert(
           containerNode.firstChild == null,
           s"ASSERT FAIL [$clue]: Unexpected children in container. Did you forget to unmount() the previous node?"
-        )(pos)
+        )(prettifier, pos)
         doAssert(
           rootNode == null,
           s"ASSERT FAIL [$clue]: Can not override non-null rootNode variable in mount(). Did you override unmount() method and forget to set rootNode = null?"
-        )(pos)
+        )(prettifier, pos)
     }
   }
 
-  def assertRootNodeMounted(clue: String)(implicit pos: scalactic.source.Position): Unit = {
+  def assertRootNodeMounted(clue: String)(implicit prettifier: scalactic.Prettifier, pos: scalactic.source.Position): Unit = {
     doAssert(
       rootNode != null,
       s"ASSERT FAIL [$clue]: There is no root node to unmount. Did you forget to mount()?"
-    )(pos)
+    )(prettifier, pos)
   }
 }

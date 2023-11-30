@@ -13,8 +13,8 @@ trait AsyncMountSpec
 
   implicit override def executionContext: ExecutionContext = JSExecutionContext.queue
 
-  override def doAssert(condition: Boolean, message: String)(implicit pos: scalactic.source.Position): Unit = {
-    assert(condition, message) //(implicitly[scalactic.Prettifier], pos)
+  override def doAssert(condition: Boolean, message: String)(implicit prettifier: scalactic.Prettifier, pos: scalactic.source.Position): Unit = {
+    assert(condition, message)(prettifier, pos)
   }
 
   override def doFail(message: String)(implicit pos: scalactic.source.Position): Nothing = {
