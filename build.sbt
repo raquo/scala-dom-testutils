@@ -30,16 +30,19 @@ scalacOptions ++= Seq(
   "-feature",
   "-language:higherKinds",
   "-language:implicitConversions",
-  {
-    val localSourcesPath = baseDirectory.value.toURI
-    val remoteSourcesPath = s"https://raw.githubusercontent.com/raquo/scala-dom-testutils/${git.gitHeadCommit.value.get}/"
-    val sourcesOptionName = if (scalaVersion.value.startsWith("2.")) "-P:scalajs:mapSourceURI" else "-scalajs-mapSourceURI"
-
-    s"${sourcesOptionName}:$localSourcesPath->$remoteSourcesPath"
-  }
 )
 
-(Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) })
+scalacOptions ++= sys.env.get("CI").map { _ =>
+  val localSourcesPath = (LocalRootProject / baseDirectory).value.toURI
+  val remoteSourcesPath = s"https://raw.githubusercontent.com/raquo/scala-dom-testutils/${git.gitHeadCommit.value.get}/"
+  val sourcesOptionName = if (scalaVersion.value.startsWith("2.")) "-P:scalajs:mapSourceURI" else "-scalajs-mapSourceURI"
+
+  s"${sourcesOptionName}:$localSourcesPath->$remoteSourcesPath"
+}
+
+(Test / scalaJSLinkerConfig ~= {
+  _.withModuleKind(ModuleKind.CommonJSModule)
+})
 
 (Test / requireJsDomEnv) := true
 
@@ -53,7 +56,11 @@ useYarn := true
 
 (Test / parallelExecution) := false
 
-(Compile / fastOptJS / scalaJSLinkerConfig) ~= { _.withSourceMap(false) }
+(Compile / fastOptJS / scalaJSLinkerConfig) ~= {
+  _.withSourceMap(false)
+}
 
-(Compile / fullOptJS / scalaJSLinkerConfig) ~= { _.withSourceMap(false) }
+(Compile / fullOptJS / scalaJSLinkerConfig) ~= {
+  _.withSourceMap(false)
+}
 
