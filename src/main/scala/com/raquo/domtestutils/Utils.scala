@@ -11,6 +11,7 @@ trait Utils {
 
   def repr(value: Any): String = {
     value match {
+      case null => "null"
       case str: String => "\"" + str + "\""
       case _ => value.toString
     }

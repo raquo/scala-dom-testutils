@@ -1,6 +1,6 @@
 object Versions {
 
-  val Scala_2_12 = "2.12.15"
+  val Scala_2_12 = "2.12.18"
 
   val Scala_2_13 = "2.13.12"
 

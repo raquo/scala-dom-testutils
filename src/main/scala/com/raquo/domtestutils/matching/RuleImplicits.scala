@@ -1,6 +1,6 @@
 package com.raquo.domtestutils.matching
 
-trait RuleImplicits[Tag, Comment, Prop[_, _], HtmlAttr[_], SvgAttr[_], Style[_]] {
+trait RuleImplicits[Tag, Comment, Prop[_, _], HtmlAttr[_], SvgAttr[_], Style[_], CompositeHtmlKey, CompositeSvgKey] {
 
   implicit def makeTagTestable(tag: Tag): ExpectedNode
 
@@ -13,6 +13,10 @@ trait RuleImplicits[Tag, Comment, Prop[_, _], HtmlAttr[_], SvgAttr[_], Style[_]]
   implicit def makeStyleTestable[V](style: Style[V]): TestableStyleProp[V]
 
   implicit def makeSvgAttrTestable[V](svgAttr: SvgAttr[V]): TestableSvgAttr[V]
+
+  implicit def makeCompositeHtmlKeyTestable(key: CompositeHtmlKey): TestableCompositeKey
+
+  implicit def makeCompositeSvgKeyTestable(key: CompositeSvgKey): TestableCompositeKey
 
   // Converters
 
