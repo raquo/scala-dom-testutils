@@ -61,7 +61,7 @@ class TestableProp[V, DomV](
     val jsUndef = js.undefined
 
     propValue.asInstanceOf[Any] match {
-      case str: String if str.length == 0 => None
+      case str: String if str.isEmpty => None
       case `jsUndef` => None
       case null => None
       case _ => Some(decode(propValue.asInstanceOf[DomV]))

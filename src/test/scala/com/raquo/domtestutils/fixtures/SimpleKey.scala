@@ -6,10 +6,14 @@ trait SimpleKey {
   val name: String
 }
 
-class Prop[V, DomV](
+abstract class Prop[V](
   override val name: String,
+) extends SimpleKey {
+
+  type DomV
+
   val codec: Codec[V, DomV]
-) extends SimpleKey
+}
 
 class HtmlAttr[V](
   override val name: String,

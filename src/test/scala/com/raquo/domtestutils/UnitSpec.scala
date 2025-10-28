@@ -20,8 +20,8 @@ class UnitSpec extends AnyFunSpec with Matchers with RuleImplicits[Tag[Any], Com
     new TestableHtmlAttr[V](attr.name, attr.codec.encode, attr.codec.decode)
   }
 
-  override implicit def makePropTestable[V, DomV](prop: Prop[V, DomV]): TestableProp[V, DomV] = {
-    new TestableProp[V, DomV](prop.name, prop.codec.decode)
+  override implicit def makePropTestable[V, _DomV](prop: Prop[V] { type DomV = _DomV }): TestableProp[V, _DomV] = {
+    new TestableProp[V, _DomV](prop.name, v => prop.codec.decode(v))
   }
 
   override implicit def makeStyleTestable[V](style: StyleProp[V]): TestableStyleProp[V] = {

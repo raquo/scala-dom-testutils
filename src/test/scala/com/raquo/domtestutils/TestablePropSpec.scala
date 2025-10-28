@@ -1,6 +1,6 @@
 package com.raquo.domtestutils
 
-import com.raquo.domtestutils.codecs.{BooleanAsIsCodec, IntAsIsCodec, IterableAsSpaceSeparatedStringCodec, StringAsIsCodec}
+import com.raquo.domtestutils.codecs.{BooleanAsIsCodec, Codec, IntAsIsCodec, IterableAsSpaceSeparatedStringCodec, StringAsIsCodec}
 import com.raquo.domtestutils.fixtures.Prop
 import org.scalajs.dom
 
@@ -8,12 +8,24 @@ import scala.scalajs.js
 
 class TestablePropSpec extends UnitSpec {
 
-  val href = new Prop("href", StringAsIsCodec)
-  val tabIndex = new Prop("tabIndex", IntAsIsCodec)
-  val disabled = new Prop("disabled", BooleanAsIsCodec)
-  val classNames = new Prop("className", IterableAsSpaceSeparatedStringCodec)
+  val href: Prop[String] = new Prop[String]("href") {
+    override type DomV = String
+    override val codec: Codec[String, String] = StringAsIsCodec
+  }
+  val tabIndex: Prop[Int] = new Prop[Int]("tabIndex") {
+    override type DomV = Int
+    override val codec: Codec[Int, Int] = IntAsIsCodec
+  }
+  val disabled: Prop[Boolean] = new Prop[Boolean]("disabled") {
+    override type DomV = Boolean
+    override val codec: Codec[Boolean, Boolean] = BooleanAsIsCodec
+  }
+  val classNames: Prop[Iterable[String]] = new Prop[Iterable[String]]("className") {
+    override type DomV = String
+    override val codec: Codec[Iterable[String], String] = IterableAsSpaceSeparatedStringCodec
+  }
 
-  def setProp[V, DomV](el: dom.Element, prop: Prop[V, DomV], value: V): Unit = {
+  def setProp[V](el: dom.Element, prop: Prop[V], value: V): Unit = {
     val domValue = prop.codec.encode(value).asInstanceOf[js.Any]
     el.asInstanceOf[js.Dynamic].updateDynamic(prop.name)(domValue)
   }
