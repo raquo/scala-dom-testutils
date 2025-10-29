@@ -5,11 +5,10 @@ import org.scalajs.dom
 import org.scalajs.dom.CSSStyleDeclaration
 
 import scala.scalajs.js
-import scala.scalajs.js.|
 
 class TestableStyleProp[V](val name: String) {
 
-  def is(expectedValue: V | String): Rule = (testNode: ExpectedNode) => {
+  def is(expectedValue: V): Rule = (testNode: ExpectedNode) => {
     // @TODO[Integrity] I hope this toString is ok. We don't use any fancy types for CSS anyway.
     testNode.addCheck(nodeStyleIs(expectedValue.toString))
   }

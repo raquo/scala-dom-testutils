@@ -5,13 +5,14 @@ import org.scalajs.dom
 import org.scalajs.dom.CSSStyleDeclaration
 
 import scala.scalajs.js
+import scala.scalajs.js.|
 
 class TestableStyleSpec extends UnitSpec {
 
   val backgroundColor = new StyleProp[String]("background-color")
-  val zIndex = new StyleProp[Int]("z-index")
+  val zIndex = new StyleProp[Int | String]("z-index")
 
-  def setStyle[V](el: dom.Element, style: StyleProp[V], value: V): Unit = {
+  def setStyle[V](el: dom.Element, style: StyleProp[V])(value: V): Unit = {
     el.asInstanceOf[js.Dynamic]
       .selectDynamic("style")
       .asInstanceOf[js.UndefOr[CSSStyleDeclaration]]
@@ -32,7 +33,7 @@ class TestableStyleSpec extends UnitSpec {
           |""".stripMargin
     )
 
-    setStyle(el, backgroundColor, "green")
+    setStyle(el, backgroundColor)("green")
 
     (backgroundColor nodeStyleIs "green") (el) shouldBe None
     (backgroundColor nodeStyleIs "red") (el) shouldBe Some(
@@ -54,7 +55,7 @@ class TestableStyleSpec extends UnitSpec {
           |""".stripMargin
     )
 
-    setStyle(el, zIndex, 100)
+    setStyle(el, zIndex)(100)
 
     (zIndex nodeStyleIs "100") (el) shouldBe None
     (zIndex nodeStyleIs "200") (el) shouldBe Some(

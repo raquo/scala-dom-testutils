@@ -6,7 +6,19 @@ import com.raquo.domtestutils.scalatest.Matchers
 import org.scalajs.dom
 import org.scalatest.funspec.AnyFunSpec
 
-class UnitSpec extends AnyFunSpec with Matchers with RuleImplicits[Tag[Any], Comment, Prop, HtmlAttr, SvgAttr, StyleProp, CompositeHtmlKey, CompositeSvgKey] {
+class UnitSpec
+  extends AnyFunSpec
+    with Matchers
+    with RuleImplicits[ //
+      Tag[Any],
+      Comment,
+      Prop,
+      HtmlAttr,
+      SvgAttr,
+      StyleProp,
+      CompositeHtmlKey,
+      CompositeSvgKey
+    ] {
 
   override implicit def makeTagTestable(tag: Tag[Any]): ExpectedNode = {
     ExpectedNode.element(tag.name)
