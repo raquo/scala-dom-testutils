@@ -26,6 +26,11 @@ class SvgAttr[V](
   val namespace: Option[String]
 ) extends SimpleKey
 
+class MathMlAttr[V](
+  override val name: String,
+  val codec: Codec[V, String]
+) extends SimpleKey
+
 class StyleProp[V](
   override val name: String
 ) extends SimpleKey

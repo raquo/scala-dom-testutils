@@ -52,7 +52,7 @@ class TestableProp[V, DomV](
           None
       }
     } else {
-      Some(s"Unable to verify Prop `${name}` because node $node is not a DOM HTML Element (might be a text node?)")
+      Some(s"Unable to verify Prop `${name}` because node $node is not a DOM HTML Element (might be a text node or an MathML / SVG element??)")
     }
   }
 

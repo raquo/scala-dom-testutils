@@ -6,6 +6,7 @@ trait RuleImplicits[ //
   Prop[_],
   HtmlAttr[_],
   SvgAttr[_],
+  MathMlAttr[_],
   Style[_],
   CompositeHtmlKey,
   CompositeSvgKey
@@ -15,13 +16,16 @@ trait RuleImplicits[ //
 
   implicit def makeCommentBuilderTestable(commentBuilder: () => Comment): ExpectedNode
 
-  implicit def makeAttrTestable[V](attr: HtmlAttr[V]): TestableHtmlAttr[V]
+  implicit def makeMathMlAttrTestable[V](attr: MathMlAttr[V]): TestableMathMlAttr[V]
 
+  // #TODO[IDE] IntelliJ 2025.2.4 does not pick up this implicit conversion – don't know any workaround – file bug
   implicit def makePropTestable[V, _DomV](prop: Prop[V] { type DomV = _DomV }): TestableProp[V, _DomV]
 
   implicit def makeStyleTestable[V](style: Style[V]): TestableStyleProp[V]
 
   implicit def makeSvgAttrTestable[V](svgAttr: SvgAttr[V]): TestableSvgAttr[V]
+
+  implicit def makeHtmlAttrTestable[V](attr: HtmlAttr[V]): TestableHtmlAttr[V]
 
   implicit def makeCompositeHtmlKeyTestable(key: CompositeHtmlKey): TestableCompositeKey
 
