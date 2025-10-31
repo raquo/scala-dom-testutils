@@ -20,8 +20,13 @@ class TestableMathMlAttr[V](
   private[domtestutils] def nodeAttrIs(maybeExpectedValue: Option[V])(node: dom.Node): MaybeError = {
     node match {
 
-      case (element: dom.MathMLElement) =>
-        val maybeActualValue = getAttr(element)
+      // #TODO JSDOM does not implement MathML so...
+      //  - https://github.com/jsdom/jsdom/issues/3515
+      //  - Given that, testing it is kinda useless, but at least we can test the Laminar parts / types...
+      //
+      // case element: dom.MathMLElement =>     // dom.MathMLElement class does not exist in JSDOM
+      case element if element.namespaceURI == "http://www.w3.org/1998/Math/MathML" =>
+        val maybeActualValue = getAttr(element.asInstanceOf[dom.MathMLElement])
         (maybeActualValue, maybeExpectedValue) match {
 
           case (Some(actualValue), Some(expectedValue)) =>
