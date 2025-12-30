@@ -2,7 +2,6 @@ package com.raquo.domtestutils.matching
 
 import com.raquo.domtestutils.Utils.repr
 import org.scalajs.dom
-import org.scalajs.dom.Element
 
 class TestableCompositeKey(
   val name: String,
@@ -21,7 +20,7 @@ class TestableCompositeKey(
   private[domtestutils] def nodeKeyIs(maybeExpectedValue: Option[String])(node: dom.Node): MaybeError = {
     val maybeActualValue = getDomValue(node)
     node match {
-      case element: Element =>
+      case element: dom.Element =>
         (maybeActualValue, maybeExpectedValue) match {
 
           case (Some(actualValue), Some(expectedValue)) =>
@@ -36,7 +35,7 @@ class TestableCompositeKey(
             }
 
           case (None, Some(expectedValue)) =>
-            val rawActualValue = getRawDomValue.applyOrElse(element, default = null)
+            val rawActualValue = getRawDomValue.applyOrElse(element, default = (_: dom.Element) => null)
             Some(
               s"""|CompositeKey `${name}` is empty or missing:
                   |- Actual (raw): ${repr(rawActualValue)}
@@ -61,7 +60,7 @@ class TestableCompositeKey(
   private[domtestutils] def getDomValue(node: dom.Node): Option[String] = {
     node match {
       case el: dom.Element =>
-        Option(getRawDomValue.applyOrElse(el, default = null))
+        Option(getRawDomValue.applyOrElse(el, default = (_: dom.Element) => null))
       case _ =>
         None
     }
