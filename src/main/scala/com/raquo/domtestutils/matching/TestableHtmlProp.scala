@@ -7,7 +7,7 @@ import scala.scalajs.js
 
 // @TODO Create EventPropOps
 
-class TestableProp[V, DomV](
+class TestableHtmlProp[V, DomV](
   val name: String,
   val decode: DomV => V
 ) {

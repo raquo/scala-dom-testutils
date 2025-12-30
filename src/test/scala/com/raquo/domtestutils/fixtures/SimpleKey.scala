@@ -15,6 +15,11 @@ abstract class Prop[V](
   val codec: Codec[V, DomV]
 }
 
+class GlobalAttr[V](
+  override val name: String,
+  val codec: Codec[V, String]
+) extends SimpleKey
+
 class HtmlAttr[V](
   override val name: String,
   val codec: Codec[V, String]
@@ -35,12 +40,7 @@ class StyleProp[V](
   override val name: String
 ) extends SimpleKey
 
-class CompositeHtmlKey(
-  val name: String,
-  val separator: String
-)
-
-class CompositeSvgKey(
+class CompositeKey(
   val name: String,
   val separator: String
 )

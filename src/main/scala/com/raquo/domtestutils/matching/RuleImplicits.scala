@@ -3,33 +3,33 @@ package com.raquo.domtestutils.matching
 trait RuleImplicits[ //
   Tag,
   Comment,
-  Prop[_],
+  HtmlProp[_],
+  GlobalAttr[_],
   HtmlAttr[_],
   SvgAttr[_],
   MathMlAttr[_],
   Style[_],
-  CompositeHtmlKey,
-  CompositeSvgKey
+  CompositeKey,
 ] {
 
   implicit def makeTagTestable(tag: Tag): ExpectedNode
 
   implicit def makeCommentBuilderTestable(commentBuilder: () => Comment): ExpectedNode
 
-  implicit def makeMathMlAttrTestable[V](attr: MathMlAttr[V]): TestableMathMlAttr[V]
-
-  // #TODO[IDE] IntelliJ 2025.2.4 does not pick up this implicit conversion – don't know any workaround – file bug
-  implicit def makePropTestable[V, _DomV](prop: Prop[V] { type DomV = _DomV }): TestableProp[V, _DomV]
+  // #TODO[IDE] IntelliJ 2025.2.4 does not pick up this implicit conversion – don't know any workaround – reported minified: https://youtrack.jetbrains.com/issue/SCL-24554/Abstract-type-member-in-function-argument-causes-red-code
+  implicit def makeHtmlPropTestable[V, _DomV](prop: HtmlProp[V] { type DomV = _DomV }): TestableHtmlProp[V, _DomV]
 
   implicit def makeStyleTestable[V](style: Style[V]): TestableStyleProp[V]
 
-  implicit def makeSvgAttrTestable[V](svgAttr: SvgAttr[V]): TestableSvgAttr[V]
+  implicit def makeGlobalAttrTestable[V](attr: GlobalAttr[V]): TestableGlobalAttr[V]
 
   implicit def makeHtmlAttrTestable[V](attr: HtmlAttr[V]): TestableHtmlAttr[V]
 
-  implicit def makeCompositeHtmlKeyTestable(key: CompositeHtmlKey): TestableCompositeKey
+  implicit def makeSvgAttrTestable[V](svgAttr: SvgAttr[V]): TestableSvgAttr[V]
 
-  implicit def makeCompositeSvgKeyTestable(key: CompositeSvgKey): TestableCompositeKey
+  implicit def makeMathMlAttrTestable[V](attr: MathMlAttr[V]): TestableMathMlAttr[V]
+
+  implicit def makeCompositeKeyTestable(key: CompositeKey): TestableCompositeKey
 
   // Converters
 

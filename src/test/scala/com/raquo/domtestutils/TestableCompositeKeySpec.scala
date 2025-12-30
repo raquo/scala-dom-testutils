@@ -1,13 +1,13 @@
 package com.raquo.domtestutils
 
-import com.raquo.domtestutils.fixtures.CompositeHtmlKey
+import com.raquo.domtestutils.fixtures.CompositeKey
 import org.scalajs.dom
 
 class TestableCompositeKeySpec extends UnitSpec {
 
-  val cls = new CompositeHtmlKey("class", separator = " ")
+  val cls = new CompositeKey("class", separator = " ")
 
-  def appendKey[V](el: dom.Element, key: CompositeHtmlKey, value: String): Unit = {
+  def appendKey[V](el: dom.Element, key: CompositeKey, value: String): Unit = {
     val currentDomValue = key.getDomValue(el)
     currentDomValue match {
       case Some(domValue) => el.setAttribute(key.name, domValue + " " + value)
@@ -15,7 +15,7 @@ class TestableCompositeKeySpec extends UnitSpec {
     }
   }
 
-  def removeAttr(el: dom.Element, attr: CompositeHtmlKey): Unit = {
+  def removeAttr(el: dom.Element, attr: CompositeKey): Unit = {
     el.removeAttribute(attr.name)
   }
 
