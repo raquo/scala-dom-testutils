@@ -13,6 +13,11 @@ class TestableStyleProp[V](val name: String) {
     testNode.addCheck(nodeStyleIs(expectedValue.toString))
   }
 
+  def isEmpty: Rule = (testNode: ExpectedNode) => {
+    // #TODO[Integrity] Not 100% sure that this is reliable, but as far as I can tell, should work with our `getStyle` funciton.
+    testNode.addCheck(nodeStyleIs(""))
+  }
+
   private[domtestutils] def nodeStyleIs(expectedValue: String)(node: dom.Node): MaybeError = {
     val actualValue = getStyle(node)
 
@@ -46,7 +51,7 @@ class TestableStyleProp[V](val name: String) {
       .selectDynamic("style")
       .asInstanceOf[js.UndefOr[CSSStyleDeclaration]]
       .flatMap { css =>
-        css.getPropertyValue(name)
+        css.getPropertyValue(name) // if not set, returns empty string
       }
       .toOption
       .getOrElse("")
