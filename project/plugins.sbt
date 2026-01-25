@@ -1,11 +1,9 @@
 logLevel := Level.Warn
 
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.20.1")
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.20.2")
 
-addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler" % "0.21.1")
+addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.11.2")
 
-addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.2.1")
+addSbtPlugin("com.github.sbt" % "sbt-git" % "2.1.0")
 
-addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.5.11")
-
-addSbtPlugin("com.github.sbt" % "sbt-git" % "2.0.1")
+libraryDependencies += "org.scala-js" %% "scalajs-env-jsdom-nodejs" % "1.1.1"

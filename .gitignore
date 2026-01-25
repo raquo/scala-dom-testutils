@@ -1,7 +1,9 @@
 target
+node_modules
+
 .idea
 .bsp
 
 .DS_Store
 
-yarn.lock
+package-lock.json

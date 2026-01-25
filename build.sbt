@@ -1,8 +1,5 @@
 import VersionHelper.{versionFmt, fallbackVersion}
 
-// Lets me depend on Maven Central artifacts immediately without waiting
-resolvers ++= Resolver.sonatypeOssRepos("public")
-
 // Makes sure to increment the version for local development
 ThisBuild / version := dynverGitDescribeOutput.value
   .mkVersion(out => versionFmt(out, dynverSonatypeSnapshots.value), fallbackVersion(dynverCurrentDate.value))
@@ -14,7 +11,7 @@ ThisBuild / dynver := {
     .mkVersion(out => versionFmt(out, dynverSonatypeSnapshots.value), fallbackVersion(d))
 }
 
-enablePlugins(ScalaJSBundlerPlugin)
+enablePlugins(ScalaJSPlugin)
 
 scalaVersion := Versions.Scala_2_13
 
@@ -40,27 +37,6 @@ scalacOptions ++= sys.env.get("CI").map { _ =>
   s"${sourcesOptionName}:$localSourcesPath->$remoteSourcesPath"
 }
 
-(Test / scalaJSLinkerConfig ~= {
-  _.withModuleKind(ModuleKind.CommonJSModule)
-})
-
-(Test / requireJsDomEnv) := true
-
-(webpack / version) := Versions.Webpack
-
-(startWebpackDevServer / version) := Versions.WebpackDevServer
-
-(installJsdom / version) := Versions.JsDom
-
-useYarn := true
+jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
 
 (Test / parallelExecution) := false
-
-(Compile / fastOptJS / scalaJSLinkerConfig) ~= {
-  _.withSourceMap(false)
-}
-
-(Compile / fullOptJS / scalaJSLinkerConfig) ~= {
-  _.withSourceMap(false)
-}
-
